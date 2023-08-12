@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    font-family: 'Titillium Web', sans-serif;
+    transition: .3s;
+}
+
+.btn {
+    color: #fff;
+    position: relative;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 0;
+    transition: .3s;
+    z-index: 0;
+}
+
+.btn:hover {
+    color: #fff;
+}
+
+.btn:hover::before {
+    width: 100%;
+    right: auto;
+    left: 0;
+}
+
+.pops {
+    font-family: 'Poppins', sans-serif;
+}
+
+.orb {
+    font-family: 'Orbitron', sans-serif;
+}
+
+.octagon {
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.bg-overlay {
+    background: linear-gradient(0deg, #111111, #111111ea, transparent)
+}
