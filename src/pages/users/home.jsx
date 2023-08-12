@@ -98,8 +98,8 @@ const Home = () => {
             <ImageBG classname="bg-green-100 bg-opacity-30 text-slate-800">
                 <div className="wrapper backdrop-blur-3xl">
                     <div className="grid grid-cols-5 min-h-[85vh] max-[950px]:min-h-[500px] justify-items-center">
-                        <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center pr-10">
-                            <div className="image h-full w-full max-[670px]:h-[70%] max-[670px]:w-[70%]">
+                        <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center pr-10 max-[670px]:pr-0">
+                            <div className="image h-full w-full max-[670px]:h-[90%] max-[670px]:w-[90%]">
                                 <img className="object-contain h-full w-full" src="./images/shield_guy.png" alt="hero image"/>
                             </div>
                         </div>
@@ -154,7 +154,7 @@ const Home = () => {
                         </div>
 
                         <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center px-5">
-                            <div className="image h-full w-full max-[670px]:h-[70%] max-[670px]:w-[70%]">
+                            <div className="image h-full w-full max-[670px]:h-[95%] max-[670px]:w-[95%]">
                                 <img className="object-contain h-full w-full" src="./images/happy_lady.png" alt="hero image"/>
                             </div>
                         </div>
