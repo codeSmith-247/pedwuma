@@ -7,17 +7,17 @@
     transition: .3s;
 }
 
-.btn {
+.btnn {
     color: #fff;
     position: relative;
 }
 
-.btn span {
+.btnn span {
     position: relative;
     z-index: 1;
 }
 
-.btn::before {
+.btnn::before {
     position: absolute;
     content: '';
     top: 0;
@@ -28,11 +28,11 @@
     z-index: 0;
 }
 
-.btn:hover {
+.btnn:hover {
     color: #fff;
 }
 
-.btn:hover::before {
+.btnn:hover::before {
     width: 100%;
     right: auto;
     left: 0;
@@ -52,4 +52,18 @@
 
 .bg-overlay {
     background: linear-gradient(0deg, #111111, #111111ea, transparent)
+}
+
+.grid-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--width), 1fr));
+}
+
+.grid-box-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--width), 1fr));
+}
+
+.ql-editor {
+    min-height: 165px;
 }

@@ -1,3 +1,4 @@
+import  { Link }  from "react-router-dom";
 import  { ImageBG , Nav}  from "../../components/";
 
 const stats = [
@@ -52,7 +53,7 @@ const Home = () => {
                         </div>
                         <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center pr-10 max-[670px]:pr-0">
                             <div className="image h-full w-full max-[670px]:h-[90%] max-[670px]:w-[90%] tranform scale-110">
-                                <img className="object-contain h-full w-full" src="./images/workers.png" alt="hero image"/>
+                                <img className="object-contain h-full w-full" src="/images/workers.png" alt="hero image"/>
                             </div>
                         </div>
                     </div>
@@ -80,13 +81,13 @@ const Home = () => {
                 <div className="w-screen overflow-x-scroll px-2">
                     <div className="w-max flex items-center gap-5 text-white text-center justify-items-center">
                         {stats.map(item =>
-                            <ImageBG image={`./images/carpenter.jpg`} classname={`max-w-[300px] card col-span-3 rounded-md overflow-hidden hover:shadow`} key={item.name}>
+                            <ImageBG image={`/images/carpenter.jpg`} classname={`max-w-[300px] card col-span-3 rounded-md overflow-hidden hover:shadow`} key={item.name}>
                                 <div className=" h-[420px]  bg-overlay bg-opacity-30 p-2 flex flex-col justify-end">
                                     <h3 className="font-bold text-xl ">CARPAINTRY</h3>
                                     <p className="pops text-sm my-2">
                                         With a passion for transforming wood into functional artistry, dedicated to delivering top-quality workmanship that exceeds expectations.
                                     </p>
-                                    <button className="btn bg-green-400 p-2 font-bold rounded-md w-full">View Skills</button>
+                                    <Link to="/people" className="btnn bg-green-400 p-2 font-bold rounded-md w-full">View Skills</Link>
                                 </div>
                             </ImageBG>
                         )}
@@ -100,7 +101,7 @@ const Home = () => {
                     <div className="grid grid-cols-5 min-h-[85vh] max-[950px]:min-h-[500px] justify-items-center">
                         <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center pr-10 max-[670px]:pr-0">
                             <div className="image h-full w-full max-[670px]:h-[90%] max-[670px]:w-[90%]">
-                                <img className="object-contain h-full w-full" src="./images/shield_guy.png" alt="hero image"/>
+                                <img className="object-contain h-full w-full" src="/images/shield_guy.png" alt="hero image"/>
                             </div>
                         </div>
                         <div className="col-span-3 max-[670px]:col-span-5 flex flex-col justify-center p-10">
@@ -120,7 +121,7 @@ const Home = () => {
                         <div className={`card col-span-3  text-slate-800 bg-white max-[525px]:bg-opacity-0 max-[525px]:shadow-none p-3 rounded-md shadow`} key={item}>
                             <div className="top flex items-center">
                                 <div className={`avatar rounded-full border-2 border-orange-100 h-[50px] w-[50px] shadow`}>
-                                    <img src="./images/man.avif" alt="avatar" className="object-cover h-full w-full rounded-full" />
+                                    <img src="/images/man.avif" alt="avatar" className="object-cover h-full w-full rounded-full" />
                                 </div>
                                 <div className="titles px-2" style={{width: "calc(100% - 50px)"}}>
                                     <div className=" text-xs text-neutral-600 pops my-1 leading-none">
@@ -138,7 +139,7 @@ const Home = () => {
                                 This is where a short description for the posted job is displayed I hope to use AI to shorten a description
                                 to a specific set of words  to a specific set of words to a specific set of words
                             </p>
-                            <button className="btn bg-green-400 p-2 font-bold rounded-md w-full">View Skills</button>
+                            <button className="btnn bg-green-400 p-2 font-bold rounded-md w-full">View Skills</button>
 
                         </div>
                     )}
@@ -155,7 +156,7 @@ const Home = () => {
 
                         <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center px-5">
                             <div className="image h-full w-full max-[670px]:h-[95%] max-[670px]:w-[95%]">
-                                <img className="object-contain h-full w-full" src="./images/happy_lady.png" alt="hero image"/>
+                                <img className="object-contain h-full w-full" src="/images/happy_lady.png" alt="hero image"/>
                             </div>
                         </div>
                     </div>
@@ -169,7 +170,7 @@ const Home = () => {
                             <div className={`card w-[350px] col-span-3  text-slate-800 bg-white max-[525px]:bg-opacity-0 max-[525px]:shadow-none p-3 rounded-md shadow`} key={item}>
                                 <div className="top flex items-center">
                                     <div className={`avatar rounded-full border-2 border-orange-100 h-[50px] w-[50px] shadow`}>
-                                        <img src="./images/man.avif" alt="avatar" className="object-cover h-full w-full rounded-full" />
+                                        <img src="/images/man.avif" alt="avatar" className="object-cover h-full w-full rounded-full" />
                                     </div>
                                     <div className="titles px-2" style={{width: "calc(100% - 50px)"}}>
                                         <div className=" text-xs text-neutral-600 pops my-1 leading-none">
@@ -193,50 +194,6 @@ const Home = () => {
                 </div>
 
             </section>
-
-            <footer className="bg-neutral-900  text-white p-10 flex justify-around items-center flex-wrap-reverse">
-                <div className="left">
-                    <div className="logo text-6xl font-bold">PE ADWUMA</div>
-                    <div className="icons flex items-center gap-5 text-2xl backdrop-blur-3xl shadow bg-neutral-950 bg-opacity-20 w-max p-3 rounded-md">
-                        {[0, 0, 0, 0].map(item => 
-                            <div className="icon flex items-center justify-center h-[40px] w-[40px] rounded-md bg-red-500" key={item}>
-                                <i className="bi bi-google"></i>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <div className="flex justify-center whitespace-nowrap">
-                    <div className="left-middle">
-                        {["Home", "Jobs", "Skills", "About Us"].map( item => 
-                            <div className="link-item p-2 my-2 hover:bg-neutral-950 rounded-md" key={item}>
-                                <i className="bi bi-link"></i>
-                                <span className="mx-2">{item}</span>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="right-middle">
-                        {["Log In", "Sign Up", "Privacy Policy", "Terms & Conditions"].map( item => 
-                            <div className="link-item p-2 my-2 hover:bg-neutral-950 rounded-md" key={item}>
-                                <i className="bi bi-link"></i>
-                                <span className="mx-2">{item}</span>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-
-                <form className="min-w-[300px] max-w-[400px] mb-10 ">
-                    <h3 className="font-black text-2xl">Send Us A Message</h3>
-
-                    <input className="p-3 h-[50px] outline-none ring-0 w-full my-3 rounded-md bg-neutral-950" name="email" type="text" placeholder="Type your email here"/>
-                    <textarea className="p-3 h-[170px] outline-none ring-0 w-full my-3 rounded-md bg-neutral-950" name="email" type="text" placeholder="Type your message here"></textarea>
-                    <button className="btn bg-green-400 p-2 font-bold rounded-md w-full">View Skills</button>
-
-                </form>
-            </footer>
-
         </>
     );
 }
