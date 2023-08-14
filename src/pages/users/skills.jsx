@@ -1,11 +1,10 @@
 // import React from 'react'
 import  { Link }  from "react-router-dom";
-import  { ImageBG , Nav, Search, Pagination}  from "../../components/";
+import  { ImageBG , Search, Pagination}  from "../../components/";
 
 const Skills = () => {
   return (
     <>
-        <Nav />
         <ImageBG image="/images/job.png" classname="bg-green-100 bg-opacity-30 text-white rounded-2xl transform scale-95 my-5 overflow-hidden shadow">
             <div className="wrapper backdrop-blur-md h-[260px] flex flex-col text-center justify-center items-center p-3 ">
                 <h1 className="capitalize text-9xl font-black max-[835px]:text-8xl">Skills</h1>

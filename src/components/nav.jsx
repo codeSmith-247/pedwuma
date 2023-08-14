@@ -25,7 +25,7 @@ const links = [
     },
     {
         name: 'Log In',
-        link: '',
+        link: '/login',
     },
 ];
 

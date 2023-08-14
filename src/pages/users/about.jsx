@@ -1,10 +1,9 @@
-import  { ImageBG , Nav}  from "../../components/";
+import  { ImageBG }  from "../../components/";
 
 
 const About = () => {
   return (
     <>
-        <Nav />
         <ImageBG classname="bg-green-100 bg-opacity-30 text-slate-800">
             <div className="wrapper backdrop-blur-3xl">
                 <div className="grid grid-cols-5 min-h-[85vh] max-[950px]:min-h-[500px] justify-items-center">

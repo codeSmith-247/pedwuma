@@ -1,5 +1,5 @@
 import  { Link }  from "react-router-dom";
-import  { ImageBG , Nav}  from "../../components/";
+import  { ImageBG , Nav, Search}  from "../../components/";
 
 const stats = [
     {
@@ -43,13 +43,7 @@ const Home = () => {
                         <div className="col-span-3 max-[670px]:col-span-5 flex flex-col justify-center p-10">
                             <h1 className="capitalize text-5xl font-black text-slate-900 max-[835px]:text-3xl">experience top-notch service from skilled individuals</h1>
                             <p className="max-w-[400px] pops my-3">Elevate with expert services tailored for you, trust our dedicated proffessionals for top-tier quality and satisfaction</p>
-
-                            <div className="search-box bg-white border-2 border-green-400 rounded-md h-[60px] w-[80%] max-[835px]:w-full shadow-lg flex overflow-hidden">
-                                <input className="w-full h-full p-5 ring-0 outline-none text-xl" type="text" />
-                                <button className="bg-green-500 text-white p-5 h-full w-[60px] transform scale-95 rounded-md flex justify-center items-center">
-                                    <i className="bi bi-search text-2xl "></i>
-                                </button>
-                            </div>
+                            <Search />
                         </div>
                         <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center pr-10 max-[670px]:pr-0">
                             <div className="image h-full w-full max-[670px]:h-[90%] max-[670px]:w-[90%] tranform scale-110">

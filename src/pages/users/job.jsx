@@ -1,11 +1,9 @@
 
-import { Nav } from "../../components/"
 import ReactQuill from 'react-quill';
 
 const Job = () => {
   return (
     <>
-        <Nav />
         <div className="card grid max-[760px]:block grid-cols-8 gap-3 min-h-[200px] p-5 border-b ">
             <div className="left col-span-6">
                 <div className="top">
@@ -50,8 +48,12 @@ const Job = () => {
 
             </div>
 
+
+
+
+
             <dialog id="my_modal_2" className="modal">
-            <form method="dialog" className="modal-box">
+                <form method="dialog" className="modal-box">
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={()=>window.my_modal_2.close()}>✕</button>
                     <h3 className="font-bold text-lg">Short Information</h3>
                     <p className="py-4">Please provide the following details to send your "request for proposal"</p>

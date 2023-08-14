@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import  { ImageBG , Nav}  from "../../components/";
+import  { ImageBG }  from "../../components/";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -8,7 +8,6 @@ const SkilledPerson = () => {
 
     return (
         <>
-            <Nav />
             <div className="card grid max-[760px]:block grid-cols-10 gap-3 min-h-[200px] p-5 border-b ">
                 <ImageBG image="/images/nurse.avif" classname="max-[760px]:mb-3 left col-span-2 overflow-hidden rounded-md " min={false}>
                     <div className="backdrop-blur-2xl h-full w-full flex items-center justify-center py-3">

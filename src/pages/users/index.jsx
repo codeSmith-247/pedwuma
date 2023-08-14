@@ -9,3 +9,6 @@ export { default as SkilledPeople } from "./skilledPeople";
 export { default as SkilledPerson } from "./skilledPerson";
 export { default as Portfolio } from "./portfolio";
 export { default as Reviews } from "./reviews";
+export { default as Login } from "./login";
+export { default as Signup } from "./signup";
+export { default as SelectPlan } from "./selectPlan";

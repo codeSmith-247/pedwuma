@@ -67,3 +67,26 @@
 .ql-editor {
     min-height: 165px;
 }
+
+.right-dashboard {
+    width: calc(100vw - 250px);
+}
+
+.right-dashboard.active {
+    width: 100vw;
+}
+
+@media only screen and (max-width: 1000px) {
+    .right-dashboard, .right-dashboard.active {
+        width: 100vw;
+    }
+
+    .main-dashboard {
+        left: -250px;
+        right: auto;
+    }
+
+    .main-dashboard.active {
+        left: 0;
+    }
+}
