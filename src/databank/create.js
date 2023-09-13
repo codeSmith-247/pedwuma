@@ -49,6 +49,16 @@ export const sendVerification = (email) => {
     });
 }
 
+export const sendChat = (data) => {
+
+    return  axios.post(`${base}/chats/send`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+}
+
 export const createProfileView = (id) => {
     let data = ipInfo();
 

@@ -7,3 +7,4 @@ export { default as telnumPrefixes } from './countryCodes';
 export { default as urls } from './config';
 export {encrypt as encrypt} from './config';
 export {decrypt as decrypt} from './config';
+export {timeAgo as timeAgo} from './config';

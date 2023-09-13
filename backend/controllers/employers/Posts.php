@@ -160,8 +160,7 @@ class Posts extends Controller
     {
         [$empties, $values] = $this->clean_assoc($_REQUEST);
 
-
-        if(count($empties) > 0) {
+        if (count($empties) > 0) {
             return [
                 'status' => 'error',
                 'title' => 'System Error',
@@ -174,23 +173,25 @@ class Posts extends Controller
 
         $response = $employer->proposals->setProposal(...$values);
 
-        if($response === true && $values['status'] === 'accepted') {
+        if ($response === true && $values['status'] === 'accepted') {
+            $proposal = $employer->proposals->userProposal($values['id']);
+            $employer->chats->initChat($proposal['skilled_id']);
+
             return [
                 'status' => 'success',
-                'title'  => 'Proposal Accepted',
-                'message' => 'The proposal has been accepted please procceed to the chat page to continue negotiations'
+                'title' => 'Proposal Accepted',
+                'message' => 'The proposal has been accepted please procceed to the chat page to continue negotiations',
             ];
         }
 
-        if($response === true && $values['status'] === 'rejected') {
+        if ($response === true && $values['status'] === 'rejected') {
             return [
                 'status' => 'info',
                 'title' => 'Proposal Rejected',
-                'message' => 'The proposal has been rejected successfully'
+                'message' => 'The proposal has been rejected successfully',
             ];
         }
 
         return $values;
-        
     }
 }

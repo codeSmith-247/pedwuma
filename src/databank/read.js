@@ -202,8 +202,22 @@ export const useInfo = () => {
 };
 
 export const useChatRecipients = () => {
-    return useQuery('info', async () => {
+    return useQuery('chat_recipients', async () => {
         const response = await axios.post(`${base}/chats/recipients`, {},  {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+            }
+        });
+        return response.data;
+    })
+};
+
+export const useChats = (id) => {
+    let data = new FormData();
+    data.append('id', id);
+
+    return useQuery(`chats_${id}`, async () => {
+        const response = await axios.post(`${base}/chats`, data,  {
             headers: {
                 'Authorization': `Bearer ${getItem('token')}`,
             }
@@ -319,6 +333,9 @@ export default {
     useEmployerProposals,
     searchEmployerJobs,
     searchProposals,
+
+    useChatRecipients,
+    useChats,
 
     ipInfo,
 

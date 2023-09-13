@@ -119,7 +119,7 @@ const MainRoutes = () => {
                     <Route path="settings" element={<EmpStngs />} />
                 </Route>
 
-                <Route path="/chats" element={<Chats />} />
+                <Route path="/chats" element={<Chats authNavs={links} />} />
             </Routes>
         </>
     );

@@ -21,7 +21,9 @@ $router->group(['before' => 'authenticate'], function () use ($router) {
     $router->post('/sendEmailVerification', ['Controller\General\Posts', 'sendVerificationCode']);
     $router->post('/proposal', ['Controller\General\Gets', 'proposal']);
     $router->post('/proposals/search', ['Controller\General\Gets', 'searchProposals']);
-    $router->post('/chat/recipients', ['Controller\Chat\Chats', 'getRecipient']);
+    $router->post('/chats/recipients', ['Controller\Chat\Chats', 'getRecipient']);
+    $router->post('/chats/send', ['Controller\Chat\Chats', 'sendChat']);
+    $router->post('/chats', ['Controller\Chat\Chats', 'getChats']);
 
     $router->group(['before' => 'employer'], function () use ($router) {
         $router->any('/employer/totals', ['Controller\Employer\Gets', 'totals']);

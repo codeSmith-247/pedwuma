@@ -1,44 +1,55 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { Avatar, Dropdown } from "flowbite-react"
+import { useState } from "react";
+// import { Link } from "react-router-dom";
+import { read, create } from '../../databank';
+import Skeleton from 'react-loading-skeleton';
+import Swal from 'sweetalert2';
+import ChatNav from './chatNav';
+import ChatBubble from './chatBubble';
 
-const links = [
-    {
-        name: "Dashboard",
-        icon: "grid",
-        link: "/skilled"
-    },
-    {
-        name: "My Jobs",
-        icon: "wrench-adjustable-circle",
-        link: "/skilled/jobs"
-    },
-    {
-        name: "My Proposals",
-        icon: "envelope",
-        link: "/skilled/proposals"
-    },
-    {
-        name: "My Portfolio",
-        icon: "person-circle",
-        link: "/skilled/portfolio"
-    },
-    {
-        name: "Chats",
-        icon: "chat",
-        link: ""
-    },
-    {
-        name: "Settings",
-        icon: "wrench",
-        link: "/skilled/settings"
-    },
-]
-
-const Chats = () => {
+// eslint-disable-next-line react/prop-types
+const Chats = ({authNavs = []}) => {
     const [menu, setMenu] = useState(true);
 
+    const [chatRecipient, setChatRecipient] = useState(null)
+
+    const [preChats, setPreChats] = useState([]);
+
+    const [chatBox, setChatBox] = useState({});
+
+    const handleInput = (e) => {
+        if(e.target.value.replaceAll(' ', '') == '' ) return false;
+        setChatBox({type: 'text', message: e.target.value});
+    }
+
+    const handleSend = (e) => {
+        e.preventDefault();
+
+        if(typeof(chatBox.type) == 'undefined') return false;
+
+        setPreChats([...preChats, {...chatBox}]);
+
+        let data = new FormData(e.target);
+
+        create.sendChat(data);
+        
+        setChatBox({})
+    }
+
+    const {data , isLoading, isError} = read.useChatRecipients();
     
+    if(data?.status === 'error'){
+        Swal.fire({
+            icon: data?.status,
+            title: data?.title,
+            text: data?.message,
+        }).then(() => location.href = '/login');
+    }
+
+    const chats = read.useChats(chatRecipient);
+
+
+    console.log(chats);
+
     return (
         <>
             <section className={`main-dashboard flex h-screen overflow-hidden p-1 text-neutral-800 absolute w-min right-0 top-0 ${menu ? '' : 'active'}`}>
@@ -46,93 +57,95 @@ const Chats = () => {
                     <div className="logo text-xl border-b pb-5 font-black text-center">PEADWUMA</div>
 
                     <div className="nav-links py-2">
-                        {links.map(item => 
-                            <Link to={item.link} className="nav-item flex items-center active:bg-green-400 hover:bg-neutral-100 active:text-white border-2 border-transparent active:border-green-300  p-1 py-1 my-3 rounded-md bg-opacity-50" key={item.name}>
-                                <div className="icon h-[40px] w-[40px] rounded-full">
-                                    <img className={`bi bi-${item.icon} rounded-full object-cover h-full w-full`} src="/images/avatar.gif" />
+                        { (isLoading || isError) &&
+                            Array.from({length: 20}, (value, index) => index).forEach((item) => {
+                                <div className="my-2">
+                                    <Skeleton height={50} key={item} />
                                 </div>
-                                <div className="pl-2">
-                                    <div className="font-bold leading-none text-sm">{item.name}</div>
-                                    <div className="text-xs pb-1 ">
-                                        This is the last message sent...
+                            })
+                        }
+
+                        { data &&
+                            data?.data?.map(item => 
+                                <button onClick={() => setChatRecipient(item.id)} className={`nav-item flex items-center w-full ${item.id == chatRecipient? 'bg-green-300 text' : ''} active:bg-green-100 hover:bg-neutral-100  border-2 border-transparent active:border-green-100  p-1 py-1 my-3 rounded-md bg-opacity-50 `} key={item.name}>
+                                    <div className="icon h-[40px] w-[40px] rounded-full">
+                                        <img className={`rounded-full object-cover h-full w-full`} src={`${data?.image_endpoint}/${item.image}`} />
                                     </div>
-                                    <div className="text-xs text-neutral-500">
-                                        03:45pm
+                                    <div className="pl-2 text-left">
+                                        <div className="font-bold leading-none text-sm">{item.name}</div>
+                                        <div className="text-xs pb-1 ">
+                                            This is the last message sent...
+                                        </div>
+                                        <div className="text-xs text-neutral-500">
+                                            03:45pm
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        )}
+                                </button>
+                            )
+                        }
+
+                        {
+                            (data?.data?.length === 0) &&
+
+                            <div className="h-[80vh] flex flex-col items-center justify-center text-gray-400 ">
+                                    <div className="icon text-6xl mb-2">
+                                        <i className="bi bi-chat-text"></i>
+                                    </div>
+                                    <span className="font-bold ">Pedwuma Chat</span>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className={`right-dashboard  p-2 ${menu ? '' : 'active'}`}>
-                    <nav className="flex items-center justify-between p-2 shadow-sm rounded-md">
-                        <div className="menu-btn flex items-center justify-center text-3xl" onClick={() => setMenu(!menu)}>
-                            <i className="bi bi-list"></i>
-                        </div>
+                    <ChatNav menu={menu} setMenu={setMenu} authNavs={authNavs}  />
 
-                        <div className="flex items-center">
-                            <Dropdown
-                                inline
-                                label={<Avatar alt="User settings" img="/images/avatar.gif" rounded status="online"/>}
-                            >
-                                <Dropdown.Header>
-                                    <span className="block text-sm">
-                                    Bonnie Green
-                                    </span>
-                                    <span className="block truncate text-sm font-medium">
-                                    name@flowbite.com
-                                    </span>
-                                </Dropdown.Header>
-                                <Dropdown.Item>
-                                    Dashboard
-                                </Dropdown.Item>
-                                <Dropdown.Item>
-                                    Settings
-                                </Dropdown.Item>
-                                <Dropdown.Item>
-                                    Earnings
-                                </Dropdown.Item>
-                                <Dropdown.Divider />
-                                <Dropdown.Item>
-                                    Sign out
-                                </Dropdown.Item>
-                            </Dropdown>
-                        </div>
-                    </nav>
+                    {
+                        (chatRecipient === null ) &&
+
+                        <main className="flex flex-col justify-center items-center h-[90vh] text-gray-400">
+                            <div className="icon text-9xl ">
+                                <i className="bi bi-briefcase"></i>
+                            </div>
+                            <span className="font-bold my-1 italic">Transact new jobs to begin new chats</span>
+                        </main>
+                    }
+
                     <main className="p-5 flex flex-col justify-end overflow-y-scroll h-[90vh]">
-                        <div className="chats">
-                            <div className="chat chat-start">
-                                <div className="chat-image avatar">
-                                    <div className="w-10 rounded-full">
-                                    <img src="/images/avatar.gif" />
-                                    </div>
+                        {
+                            (chats?.data && chats?.data?.data?.chats?.length <= 0 && preChats.length <= 0)  &&
+
+                            <div className="h-[80vh] flex items-center justify-center flex-col text-gray-400">
+                                <div className="icon text-9xl ">
+                                    <i className="bi bi-chat-text"></i>
                                 </div>
-                                <div className="chat-header">
-                                    Obi-Wan Kenobi
-                                    <time className="text-xs opacity-50">12:45</time>
-                                </div>
-                                <div className="chat-bubble">You were the Chosen One!</div>
-                                <div className="chat-footer opacity-50">
-                                    Delivered
-                                </div>
+                                <span className="font-bold my-1 italic">Send a message using the chat box bellow</span>
                             </div>
-                            <div className="chat chat-end">
-                                <div className="chat-image avatar">
-                                    <div className="w-10 rounded-full">
-                                    <img src="/images/avatar.gif" />
-                                    </div>
-                                </div>
-                                <div className="chat-header">
-                                    Anakin
-                                    <time className="text-xs opacity-50">12:46</time>
-                                </div>
-                                <div className="chat-bubble">I hate you!</div>
-                                <div className="chat-footer opacity-50">
-                                    Seen at 12:46
-                                </div>
+                        }
+                        {
+                            (chats?.data &&  chats?.data?.data?.chats?.length > 0 ) &&
+
+                            <div className="chats">
+                                {
+                                    chats?.data?.data?.chats?.map((item, index) => 
+                                        <ChatBubble item={item} key={index} fullname={chats?.data?.data?.info?.fullname}/>
+                                    )
+                                }
                             </div>
-                        </div>
-                        <div className="chat-input flex items-center gap-1">
+
+                        }
+                        {
+                            (chats?.data && preChats.length > 0) &&
+
+                            <div className="chats">
+                                {
+                                    preChats?.map((item, index) => 
+                                        <ChatBubble item={item} key={index} fullname={chats?.data?.data?.info?.fullname}/>
+                                    )
+                                }
+                            </div>
+
+                        }
+                        <form onSubmit={handleSend} className="chat-input flex items-center gap-1">
                             <div className="imoji h-[35px] w-[35px] rounded-full bg-neutral-800 text-yellow-300 flex items-center justify-center">
                                 <i className="bi bi-emoji-smile"></i>
                             </div>
@@ -140,12 +153,13 @@ const Chats = () => {
                                 <i className="bi bi-share"></i>
                             </div>
 
-                            <input type="text" className="p-3 px-5 bg-gray-200 rounded-xl border-0 hover:border-0 active:border-0 focus:border-0 hover:outline-none active:outline-none focus:outline-none hover:ring-0 focus:ring-0 active:ring-0" style={{width: "calc(100% - 105px)"}}/>
-
-                            <div className="share h-[35px] w-[35px] rounded-full bg-green-400 text-white flex items-center justify-center">
+                            <input name="message" onInput={handleInput} type="text" className="p-3 px-5 bg-gray-200 rounded-xl border-0 hover:border-0 active:border-0 focus:border-0 hover:outline-none active:outline-none focus:outline-none hover:ring-0 focus:ring-0 active:ring-0" style={{width: "calc(100% - 105px)"}}/>
+                            <input type="hidden" name="type" value={chatBox?.type} />
+                            <input type="hidden" name="recipient" value={chatRecipient} />
+                            <button className="share h-[35px] w-[35px] rounded-full bg-green-400 text-white flex items-center justify-center">
                                 <i className="bi bi-send"></i>
-                            </div>
-                        </div>
+                            </button>
+                        </form>
                     </main>
                 </div>
             </section>
