@@ -44,8 +44,8 @@ const SkilledPeople = () => {
                 <div className="grid grid-cols-8 max-[1000px]:block gap-7 min-h-screen">
 
                     <div className="col-span-6 shadow-xl rounded-xl overflow-hidden h-min">
-                        {[0,0,0,0,0,0,0,0].map(item => 
-                            <div className="card grid max-[760px]:block grid-cols-10 gap-3 min-h-[200px] p-5 border-b " key={item}>
+                        {[0,0,0,0,0,0,0,0].map((item, index) => 
+                            <div className="card grid max-[760px]:block grid-cols-10 gap-3 min-h-[200px] p-5 border-b " key={index}>
                                 <ImageBG image="/images/nurse.avif" classname="max-[760px]:mb-3 left col-span-2 overflow-hidden rounded-md " min={false}>
                                     <div className="backdrop-blur-2xl h-full w-full flex items-center justify-center py-3">
                                         <div className="image h-[190px] w-[130px] rounded-md overflow-hidden">
@@ -89,7 +89,7 @@ const SkilledPeople = () => {
                                         </div>
                                     </div>
 
-                                    <Link to="/person" className="p-2 px-3 w-full bg-green-400 text-white underline font-bold text-xs text-center self-end">
+                                    <Link to="/person" className=" block btn flex items-center justify-center hover:bg-green-500 p-2 px-3 w-full bg-green-400 text-white underline font-bold text-xs text-center self-end">
                                         View Details
                                     </Link>
 
@@ -112,7 +112,7 @@ const SkilledPeople = () => {
                             <option value="low">Low Budget</option>
                         </select>
 
-                        <Search classname="w-full h-[45px] my-3" inputclassName="text-sm" btnnclassName="text-sm w-[45px]" placeholder="search for a skill here..."/>
+                        <Search classname="w-full h-[45px] my-3" inputclassName="text-sm" btn flex items-center justify-center hover:bg-green-500className="text-sm w-[45px]" placeholder="search for a skill here..."/>
 
                         <div className="my-5">
                             <div className="font-bold text-lg">Skills/Categories</div>

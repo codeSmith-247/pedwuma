@@ -4,8 +4,8 @@ const Reviews = () => {
   return (
     <>
         <section className="p-10 pt-0">
-            {[0,0,0,0,0,0,0,0,0].map(item => 
-                <div key={item} className="card grid max-[760px]:block grid-cols-10 gap-3 min-h-[200px] p-5 border-b max-w-[900px]">
+            {[0,0,0,0,0,0,0,0,0].map((item, index) => 
+                <div key={index} className="card grid max-[760px]:block grid-cols-10 gap-3 min-h-[200px] p-5 border-b max-w-[900px]">
                     <ImageBG image="" classname="max-[760px]:mb-3 left col-span-2 overflow-hidden rounded-md " min={false}>
                         <div className="backdrop-blur-2xl h-full w-full flex items-center justify-center py-3">
                             <div className="image h-[130px] w-[130px] rounded-full overflow-hidden">
@@ -16,8 +16,8 @@ const Reviews = () => {
                     <div className="right col-span-8 py-5">
                         <div className="top">
                             <div className="location text-yellow-400 flex gap-2 items-center">
-                                {[0,0,0,0,0].map(item => 
-                                    <i className="bi bi-star-fill" key={item}></i>
+                                {[0,0,0,0,0].map((item, index) => 
+                                    <i className="bi bi-star-fill" key={index}></i>
                                 )}
                             </div>
 

@@ -13,12 +13,64 @@ import {
     About,
     Login,
     Signup,
+    Verify,
     SelectPlan,
     SkilledPeople, 
     SkilledPerson,
     Portfolio,
-    Reviews
+    Reviews,
+    Logout,
+    SendVerify
 } from "../pages/users/";
+
+import { 
+    Dashboard,
+    Jobs as SkilledJobs,
+    Portfolio as SkilledPortfolio,
+    Proposals,
+    Settings,
+    Chats,
+
+} from "../pages/skilled/";
+
+import { 
+    Dashboard as EmpDash,
+    Jobs as EmpJobs,
+    Job as EmpJob,
+    EditJob,
+    Proposals as EmpPros,
+    Settings as EmpStngs,
+
+} from "../pages/employer/";
+
+
+const links = [
+    {
+        name: "Dashboard",
+        icon: "grid",
+        link: "/employer"
+    },
+    {
+        name: "My Jobs",
+        icon: "wrench-adjustable-circle",
+        link: "/employer/jobs"
+    },
+    {
+        name: "My Proposals",
+        icon: "envelope",
+        link: "/employer/proposals"
+    },
+    {
+        name: "Chats",
+        icon: "chat",
+        link: "/chats"
+    },
+    {
+        name: "Settings",
+        icon: "wrench",
+        link: "/employer/settings"
+    },
+]
 
 
 const MainRoutes = () => {
@@ -31,7 +83,7 @@ const MainRoutes = () => {
                 <Route element={ <HomeLayout /> }>
 
                     <Route path="/jobs"   element={ <Jobs /> }/>
-                    <Route path="/job"   element={ <Job /> }/>
+                    <Route path="/job/:id"   element={ <Job /> }/>
                     <Route path="/about"  element={ <About /> }/>
                     <Route path="/skills" element={ <Skills /> }/>
                     <Route path="/people" element={ <SkilledPeople /> }/>
@@ -44,10 +96,30 @@ const MainRoutes = () => {
                 </Route>
 
                 <Route path="/login"   element={ <Login /> }/>
+                <Route path="/logout"   element={ <Logout /> }/>
                 <Route path="/signup"   element={ <Signup /> }/>
+                <Route path="/verify"   element={ <SendVerify /> }/>
+                <Route path="/verify/:id"   element={ <Verify /> }/>
                 <Route path="/plans"   element={ <SelectPlan /> }/>
 
-                <Route path="/auth"   element={ <AuthLayout /> }/>
+                <Route path="/skilled"   element={ <AuthLayout id={2} /> }>
+                    <Route index element={<Dashboard />} />
+                    <Route path="jobs" element={<SkilledJobs />} />
+                    <Route path="proposals" element={<Proposals />} />
+                    <Route path="portfolio" element={<SkilledPortfolio />} />
+                    <Route path="settings" element={<Settings />} />
+                </Route>
+
+                <Route path="/employer"   element={ <AuthLayout id={1} authNavs={links} /> }>
+                    <Route index element={<EmpDash />} />
+                    <Route path="jobs" element={<EmpJobs />} />
+                    <Route path="job/:id" element={<EditJob />} />
+                    <Route path="job" element={<EmpJob />} />
+                    <Route path="proposals" element={<EmpPros />} />
+                    <Route path="settings" element={<EmpStngs />} />
+                </Route>
+
+                <Route path="/chats" element={<Chats />} />
             </Routes>
         </>
     );

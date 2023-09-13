@@ -7,17 +7,14 @@
     transition: .3s;
 }
 
-.btnn {
-    color: #fff;
-    position: relative;
-}
 
-.btnn span {
+
+.btn span {
     position: relative;
     z-index: 1;
 }
 
-.btnn::before {
+.btn::before {
     position: absolute;
     content: '';
     top: 0;
@@ -28,11 +25,11 @@
     z-index: 0;
 }
 
-.btnn:hover {
+.btn:hover {
     color: #fff;
 }
 
-.btnn:hover::before {
+.btn:hover::before {
     width: 100%;
     right: auto;
     left: 0;
@@ -64,8 +61,18 @@
     grid-template-columns: repeat(auto-fit, minmax(var(--width), 1fr));
 }
 
+.ql-container {
+    height: inherit;
+}
+
 .ql-editor {
     min-height: 165px;
+    outline: none;
+    height: inherit;
+}
+
+.min-height .ql-editor {
+    min-height: max-content;
 }
 
 .right-dashboard {
@@ -75,6 +82,19 @@
 .right-dashboard.active {
     width: 100vw;
 }
+
+input:focus-visible {
+    outline: none;
+}
+
+.img-cover img, img.img-cover {
+    object-fit: cover;
+}
+
+/* .map > div:nth-of-type(2)  {
+    height: 500px;
+    width: 500px; 
+} */
 
 @media only screen and (max-width: 1000px) {
     .right-dashboard, .right-dashboard.active {

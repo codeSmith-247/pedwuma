@@ -23,7 +23,7 @@ const Skills = () => {
                             <p className="pops text-sm my-2">
                                 With a passion for transforming wood into functional artistry, dedicated to delivering top-quality workmanship that exceeds expectations.
                             </p>
-                            <Link to="/people" className="btnn bg-green-400 p-2 font-bold rounded-md w-full">View Skills</Link>
+                            <Link to="/people" className="btn text-white hover:bg-green-500 text-center bg-green-400 font-bold rounded-md w-full">View Skills</Link>
                         </div>
                     </ImageBG>
                 )}

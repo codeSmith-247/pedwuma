@@ -43,8 +43,8 @@ const SkilledPerson = () => {
                     <div className="p-3">
                         <b>Rank</b>
                         <div className="rank text-yellow-400 flex gap-2 items-center py-1">
-                            {[0,0,0,0,0].map(item => 
-                                <i className="bi bi-star-fill" key={item}></i>
+                            {[0,0,0,0,0].map((item, index) => 
+                                <i className="bi bi-star-fill" key={index}></i>
                             )}
                         </div>
                     </div>
@@ -62,7 +62,7 @@ const SkilledPerson = () => {
                         </div>
                     </div>
 
-                    <button onClick={()=>window.my_modal_2.showModal()} className="p-2 px-3 w-full bg-green-400 text-white underline font-bold self-end">
+                    <button onClick={()=>window.my_modal_2.showModal()} className=" btn flex items-center justify-center hover:bg-green-500 p-2 text-center px-3 w-full bg-green-400 text-white underline font-bold self-end">
                         Hire Me
                     </button>
 
@@ -71,7 +71,7 @@ const SkilledPerson = () => {
 
             <dialog id="my_modal_2" className="modal">
                 <form method="dialog" className="modal-box">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={()=>window.my_modal_2.close()}>✕</button>
+                    <button className="text-black absolute btn btn-sm btn-circle btn-ghost  right-2 top-2" onClick={()=>window.my_modal_2.close()}>✕</button>
                     <h3 className="font-bold text-lg">Short Information</h3>
                     <p className="py-4">Please provide the following details to send your "request for proposal"</p>
 
@@ -97,7 +97,7 @@ const SkilledPerson = () => {
                     </div>
                     
                     <div className="form-control w-full mt-5 ">
-                        <button className="btn bg-green-400 hover:bg-green-500 text-white">Send Request For Proposal</button>
+                        <button className="btn flex items-center justify-center bg-green-400 hover:bg-green-500 text-white">Send Request For Proposal</button>
                     </div>
                 </form>
             </dialog>

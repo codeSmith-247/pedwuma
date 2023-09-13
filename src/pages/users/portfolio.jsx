@@ -5,8 +5,8 @@ const Portfolio = () => {
   return (
     <section className="p-10 pt-0">
         <div className="grid-box-fit rounded-md overflow-hidden gap-3" style={{"--width": "320px"}}>
-            {[0,0,0,0,0,0,0,0].map(item => 
-                <div className="card h-[450px] p-2 shadow rounded-md transform hover:scale-105 hover:shadow-md" key={item}>
+            {[0,0,0,0,0,0,0,0].map((item, index) => 
+                <div className="card h-[450px] p-2 shadow rounded-md transform hover:scale-105 hover:shadow-md" key={index}>
                     <div className="image h-1/2 overflow-hidden rounded-md">
                         <img className="object-cover h-full w-full" src="/images/help.jpeg" alt="portfolio image" />
                     </div>
@@ -25,7 +25,7 @@ const Portfolio = () => {
                             </div>
 
                         </div>
-                        <button className="bg-green-400 border-2 border-green-500 p-2 px-3 w-full rounded-md text-white" onClick={()=>window.my_modal_3.showModal()}>View Images</button>
+                        <button className="btn flex items-center justify-center  text-center bg-green-400 hover:bg-green-500 border-2 border-green-500 p-2 px-3 w-full rounded-md text-white" onClick={()=>window.my_modal_3.showModal()}>View Images</button>
                     </div>
                 </div>
             )}
@@ -34,7 +34,7 @@ const Portfolio = () => {
 
         <dialog id="my_modal_3" className="modal">
             <div method="dialog" className="modal-box">
-                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={()=>window.my_modal_3.close()}>✕</button>
+                <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-black" onClick={()=>window.my_modal_3.close()}>✕</button>
                 <div className="carousel w-full h-[400px]">
                     <div id="item1" className="carousel-item w-full">
                         <img src="/images/nurse.avif" className="w-full object-contain h-full" />
@@ -50,10 +50,10 @@ const Portfolio = () => {
                     </div>
                 </div> 
                 <div className="flex justify-center w-full py-2 gap-2">
-                    <a href="#item1" className="btn btn-xs">1</a> 
-                    <a href="#item2" className="btn btn-xs">2</a> 
-                    <a href="#item3" className="btn btn-xs">3</a> 
-                    <a href="#item4" className="btn btn-xs">4</a>
+                    <a href="#item1" className="btn btn-xs text-black">1</a> 
+                    <a href="#item2" className="btn btn-xs text-black">2</a> 
+                    <a href="#item3" className="btn btn-xs text-black">3</a> 
+                    <a href="#item4" className="btn btn-xs text-black">4</a>
                 </div>
             </div>
         </dialog>

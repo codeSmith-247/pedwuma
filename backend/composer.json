@@ -1,0 +1,31 @@
+{
+    "require": {
+        "phroute/phroute": "^2.2",
+        "symfony/error-handler": "^6.3",
+        "monolog/monolog": "^3.4",
+        "firebase/php-jwt": "^6.8",
+        "phpmailer/phpmailer": "^6.8"
+    },
+
+    "autoload": {
+        "psr-4" : {
+            "Model\\": "models",
+            "Model\\Employer\\": "models/employers",
+            "Model\\Job\\": "models/jobs",
+            "Model\\Proposal\\": "models/proposals",
+            "Model\\Skilled\\": "models/skilled",
+            "Model\\Skill\\": "models/skills",
+            "Model\\User\\": "models/users",
+            "Model\\Review\\": "models/reviews",
+
+            "Controller\\": "controllers",
+            "Controller\\Employer\\": "controllers/employers",
+            "Controller\\General\\": "controllers/general",
+            "Controller\\Skilled\\": "controllers/skilled",
+            "Controller\\Chat\\": "controllers/chats",
+
+            "Service\\": "services",
+            "Middleware\\": "middlewares"
+        }
+    }
+}

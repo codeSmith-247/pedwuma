@@ -11,4 +11,7 @@ export { default as Portfolio } from "./portfolio";
 export { default as Reviews } from "./reviews";
 export { default as Login } from "./login";
 export { default as Signup } from "./signup";
+export { default as Verify } from "./verify";
+export { default as SendVerify } from "./sendVerify";
 export { default as SelectPlan } from "./selectPlan";
+export { default as Logout } from "./logout";
