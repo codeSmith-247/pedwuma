@@ -1,8 +1,7 @@
-# React + Vite
+# PEDWUMA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The goal of this application is to connect local workers/service providers in Ghana with potential clients using the web as a medium, it seeks to solve the problem of unemployment, data in provided to this application is served in realtime, and is built using the proposal request model.
 
-Currently, two official plugins are available:
+Currently live on :
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [PEDWUMA](https://pedwuma.com) uses React and Tailwind for frontend and PHP (MVC) for backend.
