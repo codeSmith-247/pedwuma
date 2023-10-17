@@ -53,7 +53,7 @@ const Signup = () => {
         );
 
         create.createUser(data).then((response) => {
-            // console.log(response);
+            console.log(response);
             setSubmit(
                 {
                     isLoading: false,
@@ -177,7 +177,7 @@ const Signup = () => {
                                 <label className="label my-1">
                                     <span className="label-text mx-auto text-center font-bold">click browse below to upload a profile picture</span>
                                 </label>
-                                <input required name="avatar" type="file" className={`file-input file-input-bordered w-full ${submit?.data?.avatar  && 'input-error'}`} onInput={handleAvatar}/>
+                                <input name="avatar" type="file" className={`file-input file-input-bordered w-full ${submit?.data?.avatar  && 'input-error'}`} onInput={handleAvatar}/>
                                 {
                                     submit?.data?.avatar && 
                                     <label className="label">
@@ -192,7 +192,7 @@ const Signup = () => {
                                 }
                                 {!(isLoadingRoles || isErrorRoles) &&
                                     <select name="role" className={`select select-bordered w-full ${submit?.data?.role  && 'input-error'}`}>
-                                        <option value='' disabled selected>Role (Employer / Skilled Person)</option>
+                                        <option value='' disabled selected>Role (Employer / Service Provider)</option>
                                         {roles?.data?.map(item => 
                                             <option value={item.id} key={item.id}>{item.name}</option>
                                         )}

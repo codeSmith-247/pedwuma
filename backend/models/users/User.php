@@ -157,7 +157,12 @@ class User extends Model
              ->execute()[0] ?? [];
     }
 
-    public function update($values)
+    public function userSkills($id)
+    {
+        return $this->query(" select * from skills where id in ( select skill_id from users_to_skills where skilled_id = ?) ", [$id]);
+    }
+
+    public function update($values, $callback = null)
     {
         $sql = 'update users set fullname = ?, email = ?, number = ?, media = ?, location = ?, lat = ?, lng = ? where id = ?;';
 
@@ -172,14 +177,24 @@ class User extends Model
             $values['user_id'],
         ];
 
+        if($callback !== null)
+        $this->insert($sql, $values, $callback);
+        else
         $this->insert($sql, $values);
     }
 
     public function linkUserToSkills($user_id, $skill_id)
     {
-        $sql = 'insert into users_to_skills set user_id = ? , skill_id = ?';
+        $sql = 'insert into users_to_skills set skilled_id = ? , skill_id = ?';
 
         $this->insert($sql, [$user_id, $skill_id]);
+    }
+
+    public function clearUserSkills($user_id)
+    {
+        $sql = 'delete from users_to_skills where skilled_id = ?';
+
+        $this->insert($sql, [$user_id]);
     }
 
     public function verificationCode($id, $code)

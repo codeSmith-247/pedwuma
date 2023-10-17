@@ -40,7 +40,7 @@ import {
     EditJob,
     Proposals as EmpPros,
     Settings as EmpStngs,
-
+    Appointment,
 } from "../pages/employer/";
 
 
@@ -66,10 +66,16 @@ const links = [
         link: "/chats"
     },
     {
+        name: "Appointments",
+        icon: "clock",
+        link: "/employer/appointments"
+    },
+    {
         name: "Settings",
         icon: "wrench",
         link: "/employer/settings"
     },
+
 ]
 
 
@@ -86,9 +92,10 @@ const MainRoutes = () => {
                     <Route path="/job/:id"   element={ <Job /> }/>
                     <Route path="/about"  element={ <About /> }/>
                     <Route path="/skills" element={ <Skills /> }/>
+                    <Route path="/people/:title" element={ <SkilledPeople /> }/>
                     <Route path="/people" element={ <SkilledPeople /> }/>
 
-                    <Route path="/person" element={ <SkilledPerson /> }>
+                    <Route path="/person/:id" element={ <SkilledPerson /> }>
                         <Route index            element={ <Portfolio />} />
                         <Route path="portfolio" element={ <Portfolio />} />
                         <Route path="reviews"   element={ <Reviews />} />
@@ -108,6 +115,7 @@ const MainRoutes = () => {
                     <Route path="proposals" element={<Proposals />} />
                     <Route path="portfolio" element={<SkilledPortfolio />} />
                     <Route path="settings" element={<Settings />} />
+                    <Route path="appointments" element={<Appointment />} />
                 </Route>
 
                 <Route path="/employer"   element={ <AuthLayout id={1} authNavs={links} /> }>
@@ -117,6 +125,7 @@ const MainRoutes = () => {
                     <Route path="job" element={<EmpJob />} />
                     <Route path="proposals" element={<EmpPros />} />
                     <Route path="settings" element={<EmpStngs />} />
+                    <Route path="appointments" element={<Appointment />} />
                 </Route>
 
                 <Route path="/chats" element={<Chats authNavs={links} />} />

@@ -8,12 +8,16 @@ import { BrowserRouter } from "react-router-dom"
 
 import {QueryClient, QueryClientProvider} from 'react-query'
 
+import { Translate } from '/src/components';
+
+
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
     <React.StrictMode>
       <BrowserRouter>
+        <Translate />
         <App />
       </BrowserRouter>
     </React.StrictMode>

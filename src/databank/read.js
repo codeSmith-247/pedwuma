@@ -84,11 +84,43 @@ export const useEmployerJob = (id) => {
     })
 };
 
-export const useSkills = () => {
-    return useQuery('skills', async () => {
-        const response = await axios.get(`${base}/skills`);
+export const useSkills = (page=1) => {
+    return useQuery(`skills_${page}`, async () => {
+        const response = await axios.get(`${base}/skills?page=${page}`);
         return response.data;
     })
+};
+
+export const useSkilledPeople = (page = 1, filter='recent', skill='', lat=0, lng=0) => {
+    let data = new FormData();
+    data.append('page', page);
+    data.append('filter', filter);
+    data.append('skill', skill);
+    data.append('lat', lat);
+    data.append('lng', lng);
+
+    return useQuery(`skilledPeople_${page}_${lat}_${lng}_${filter}_${skill}`, async () => {
+        const response = await axios.post(`${base}/skilledPeople`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    });
+};
+
+export const useSkilledPerson = (id) => {
+    let data = new FormData();
+    data.append('id', id);
+
+    return useQuery(`skilledPerson_${id}`, async () => {
+    const response = await axios.post(`${base}/skilledPerson`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    });
 };
 
 export const useSkilledTotals = () => {
@@ -116,6 +148,90 @@ export const useSkilledJobs = (page=1, type='recent') => {
         });
         return response.data;
     })
+};
+
+export const useSkilledProposals = (page=1, type='recent') => {
+    
+    let data = new FormData();
+    data.append('page', page);
+    data.append('type', type);
+
+    return useQuery(`skilled_proposals_${page}_${type}`, async () => {
+        const response = await axios.post(`${base}/skilled/proposals`, data, {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response.data;
+    })
+};
+
+
+export const usePortfolios = (page=1) => {
+    
+    let data = new FormData();
+    data.append('page', page);
+
+    return useQuery(`portfolios_${page}`, async () => {
+        const response = await axios.post(`${base}/skilled/portfolios`, data, {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response.data;
+    })
+};
+
+export const useSkilledPortfolios = (id, page=1) => {
+    let data = new FormData();
+    data.append('page', page);
+    data.append('id', id);
+
+    return useQuery(`skilled_portfolios_${page}`, async () => {
+        const response = await axios.post(`${base}/skilled/portfolios/id`, data, {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response.data;
+    })
+}
+
+export const useReviews = (page=1) => {
+    let data = new FormData();
+    data.append('page', page);
+
+    return useQuery(`portfolios_${page}`, async () => {
+        const response = await axios.post(`${base}/skilled/portfolios`, data, {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response.data;
+    })
+}
+
+export const usePortfolio = (id) => {
+    
+    let data = new FormData();
+    data.append('id', id);
+
+
+    return useQuery(`portfolio_${id}`, async () => {
+        const response = await axios.post(`${base}/skilled/portfolio`, data, {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return response.data;
+    });
+
+    
 };
 
 export const useJobs = (page = 1, filter='recent', skill='', lat=0, lng=0) => {
@@ -154,6 +270,32 @@ export const useJob = (id, lat=0, lng=0) => {
     });
 };
 
+export const getJobs = (recipient) => {
+    let data = new FormData();
+
+    data.append('recipient', recipient);
+
+    return axios.post(`${base}/getJobs`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+}
+
+export const getCompletableJobs = (recipient) => {
+    let data = new FormData();
+
+    data.append('recipient', recipient);
+
+    return axios.post(`${base}/getCompletableJobs`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+}
+
 export const jobSkills = async (id) => {
     let data = new FormData();
 
@@ -169,9 +311,19 @@ export const jobSkills = async (id) => {
     return response.data;
 };
 
-export const useReviews = () => {
-    return useQuery('reviews', async () => {
-        const response = await axios.get(`${base}/reviews`);
+export const useSkilledReviews = (id, page=1) => {
+    let data = new FormData();
+    data.append('id', id);
+    data.append('page', page);
+
+    return useQuery('info', async () => {
+        const response = await axios.post(`${base}/skilledReviews`, data, {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+
         return response.data;
     })
 };
@@ -223,8 +375,40 @@ export const useChats = (id) => {
             }
         });
         return response.data;
-    })
+    }, {
+        refetchInterval: 3000, // Set the polling interval in milliseconds (e.g., 5000 for 5 seconds)
+        staleTime: 5000, // Set the stale time in milliseconds (e.g., 10000 for 10 seconds)
+      })
 };
+
+export const useAppointments = (page=1, filter) => {
+    let data = new FormData();
+    data.append('page', page);
+    data.append('type', filter);
+
+    return useQuery(`user_appointments_${page}_${filter}` , async () => {
+        const response = await axios.post(`${base}/appointments`, data,  {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+            }
+        });
+        return response.data;
+    })
+}
+
+export const useAppointment = (id) => {
+    let data = new FormData();
+    data.append('id', id);
+
+    return useQuery(`user_appointment_${id}`, async () => {
+        const response = await axios.post(`${base}/appointment`, data,  {
+            headers: {
+                'Authorization': `Bearer ${getItem('token')}`,
+            }
+        });
+        return response.data;
+    })
+}
 
 export const verfiyCode = (code) => {
     let data = new FormData();
@@ -270,6 +454,17 @@ export const searchJobs = (value) => {
     });
 };
 
+export const searchPerson = (value) => {
+    let data = new FormData();
+    data.append('value', value);
+
+    return axios.post(`${base}/skilled/search`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+        }
+    });
+};
+
 export const searchSkills = (value) => {
     let data = new FormData();
     data.append('value', value);
@@ -286,6 +481,17 @@ export const searchProposals = (value) => {
     data.append('value', value);
 
     return axios.post(`${base}/proposals/search`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+        }
+    });
+};
+
+export const searchPortfolios = (value) => {
+    let data = new FormData();
+    data.append('value', value);
+
+    return axios.post(`${base}/portfolios/search`, data, {
         headers: {
             'Authorization': `Bearer ${getItem('token')}`,
         }
@@ -333,6 +539,8 @@ export default {
     useEmployerProposals,
     searchEmployerJobs,
     searchProposals,
+    getJobs,
+    getCompletableJobs,
 
     useChatRecipients,
     useChats,
@@ -342,14 +550,25 @@ export default {
     useSkilledTotals,
     useSkilledJobs,
     searchSkilledJobs,
+    useSkilledProposals,
+    usePortfolios,
+    useSkilledPortfolios,
+    usePortfolio,
+    searchPortfolios,
 
+    useSkilledReviews,
+    useAppointments,
+    useAppointment,
     useJobs,
     useJob,
     jobSkills,
     searchJobs,
     searchSkills,
+    searchPerson,
     useInfo,
     useSkills, 
+    useSkilledPeople, 
+    useSkilledPerson,
     useTotals, 
     useReviews, 
     useRoles,

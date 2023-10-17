@@ -38,7 +38,7 @@ class Logger extends Middleware
         $formatter = new JsonFormatter();
 
         $handler->setFormatter($formatter);
-        $this->telegram_handler->setFormatter($formatter);
+        // $this->telegram_handler->setFormatter($formatter);
 
         return $logger;
     }
@@ -60,7 +60,7 @@ class Logger extends Middleware
         $formatter = new JsonFormatter();
 
         $handler->setFormatter($formatter);
-        $this->telegram_handler->setFormatter($formatter);
+        // $this->telegram_handler->setFormatter($formatter);
 
         return $logger;
     }

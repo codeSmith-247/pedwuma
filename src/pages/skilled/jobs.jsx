@@ -16,7 +16,7 @@ const Jobs = () => {
     const {data, isLoading, isError} = read.useSkilledJobs(page, searchType);
 
     const handleEdit = (id) => {
-        create.setItem('job_id', `${id}`);
+        create.setItem('chat_person', `${id}`);
         navigate('/chat');
     }
 
@@ -135,7 +135,7 @@ const Jobs = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span onClick={() => handleEdit(item.id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</span>
+                                        <span onClick={() => handleEdit(item.employer_id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Chat Employer</span>
                                     </td>
                                 </tr>
                             )}

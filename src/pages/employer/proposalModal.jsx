@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import {read, update, create } from '../../databank';
+import {read, update, create, encrypt } from '../../databank';
 import Skeleton from 'react-loading-skeleton';
 import { Loading } from '../../components';
 import Swal from 'sweetalert2';
@@ -19,7 +19,9 @@ const ProposalModal = ({id}) => {
 
     if(proposalRef.current && typeof(data?.description) !== 'undefined') {
         let editor = proposalRef.current.getEditor();
-        editor.setContents(JSON.parse(data?.description));
+        if(data?.description[0] == "{")
+            editor.setContents(JSON.parse(data?.description));
+        else editor.setText(data?.description);
     }
 
     const handleProposal = (state) => {
@@ -36,13 +38,19 @@ const ProposalModal = ({id}) => {
             }).then( () => {
                 if(state === 'accepted') {
                     create.setItem('chat_recipient', `${data?.skilled_id}`);
-                    navigate('/chats')
+                    handleContinueToChat(data?.skilled_id)
                 }
 
                 console.log('state', state);
             })
         });
-    } 
+    }
+
+
+    const handleContinueToChat = (id) => {
+        create.setItem('chat_person', encrypt(`${id}`));
+        navigate('/chats');
+    }
 
     // console.log('proposal_modal_data', data);
 
@@ -101,7 +109,7 @@ const ProposalModal = ({id}) => {
                         <div className="form-control w-full mt-5 ">
                             {
                                 (typeof(data?.status) !== 'undefined' && data?.status == 'accepted') && 
-                                <button className="btn flex items-center justify-center bg-green-400 hover:bg-green-500 text-white">CONTINUE TO CHAT</button>
+                                <button onClick={() => handleContinueToChat(data?.skilled_id)} className="btn flex items-center justify-center bg-green-400 hover:bg-green-500 text-white">CONTINUE TO CHAT</button>
                             }
 
                             {

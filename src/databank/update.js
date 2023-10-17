@@ -36,8 +36,30 @@ export const updateEmployer = (data) => {
     });
 }
 
+export const updateSkilled = (data) => {
+
+    return  axios.post(`${base}/updateSkilled`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+}
+
+export const updatePortfolio = (data) => {
+
+    return  axios.post(`${base}/updatePortfolio`, data, {
+        headers: {
+            'Authorization': `Bearer ${getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+}
+
 export default {
     updateJob,
     updateEmployer,
     setProposalStates,
+    updateSkilled,
+    updatePortfolio,
 }

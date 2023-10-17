@@ -18,21 +18,39 @@ class Chat extends Model
 
     public function recipients()
     {
-        $sql = 'SELECT 
-                    r.id AS id,
-                    r.fullname AS name,
-                    r.media AS image,
-                    c.message AS message,
-                    MAX(c.updated_at) AS last_time
-                FROM users u
-                JOIN chats c ON u.id = c.sender_id
-                JOIN users r ON r.id = c.recipient_id
-                WHERE u.id = ?
-                GROUP BY r.id, r.fullname, u.id, u.fullname
-                ORDER BY last_time DESC; 
+        $sql = 'SELECT
+        u.id AS id,
+        u.fullname AS name,
+        u.media AS image,
+        c.message AS message,
+        max_time.last_time AS last_time
+    FROM
+        users u
+    JOIN
+        chats c ON (u.id = c.sender_id OR u.id = c.recipient_id)
+    JOIN
+        (
+            SELECT
+                CASE
+                    WHEN sender_id = ? THEN recipient_id
+                    ELSE sender_id
+                END AS user_id,
+                MAX(updated_at) AS last_time
+            FROM
+                chats
+            WHERE
+                sender_id = ? OR recipient_id = ?
+            GROUP BY
+                user_id
+        ) AS max_time ON (u.id = max_time.user_id)
+    WHERE
+        (c.sender_id = ? OR c.recipient_id = ?) 
+        AND c.updated_at = max_time.last_time
+    ORDER BY
+        max_time.last_time DESC;
             ';
 
-        $recipients = $this->query($sql, [$this->id]);
+        $recipients = $this->query($sql, [$this->id, $this->id, $this->id, $this->id, $this->id]);
 
         return $recipients;
     }
@@ -56,6 +74,7 @@ class Chat extends Model
                     sender_id,
                     recipient_id,
                     message,
+                    type,
                     CASE 
                         WHEN sender_id = ? THEN 'sender'
                         ELSE 'recipient'
@@ -64,7 +83,7 @@ class Chat extends Model
                     created_at,
                     status
                 FROM chats
-                WHERE sender_id = ? and recipient_id = ? and type != 'init'
+                WHERE ((sender_id = ? and recipient_id = ?) or (sender_id = ? and recipient_id = ?)) and type != 'init'
                 ORDER BY updated_at;
             ";
 
@@ -72,14 +91,16 @@ class Chat extends Model
             $this->id,
             $this->id,
             $id,
+            $id,
+            $this->id,
         ];
 
         return $this->query($sql, $values);
     }
 
-    public function new()
-    {  
-        $sql = "insert into chats set sender_id = ?, recipient_id = ?, type = ?, message = ?";
+    public function new($values)
+    {
+        $sql = 'insert into chats set sender_id = ?, recipient_id = ?, type = ?, message = ?';
 
         $values = [
             $this->id,

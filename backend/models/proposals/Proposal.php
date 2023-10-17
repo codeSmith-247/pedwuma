@@ -61,21 +61,59 @@ class Proposal extends Model
         return (int) $proposal->execute();
     }
 
+
     public function proposals(string $status = ''): array
     {
-        $proposals = $this->fetch('proposals')
-                          ->subFetch('image', 'select media from users where users.id = proposals.skilled_id')
-                          ->subFetch('name', 'select fullname from users where users.id = proposals.skilled_id')
-                          ->subFetch('location', 'select location from users where users.id = proposals.skilled_id');
-
+        $proposals = $this->fetch('proposals');
+        
         if ($this->user_type == 'employer') {
-            $proposals->where('employer_id', $this->id);
+            $proposals->subFetch('image', 'select media from users where users.id = proposals.skilled_id')
+                    ->subFetch('name', 'select fullname from users where users.id = proposals.skilled_id')
+                    ->subFetch('location', 'select location from users where users.id = proposals.skilled_id')
+                     ->where('employer_id', $this->id);
         } else {
-            $proposals->where('skilled_id', $this->id);
+            $proposals->subFetch('image', 'select media from users where users.id = proposals.employer_id')
+                      ->subFetch('name', 'select title from jobs where jobs.id = proposals.job_id')
+                      ->subFetch('location', 'select location from jobs where jobs.id = proposals.job_id')
+                      ->where('skilled_id', $this->id);
         }
 
         if ($status !== '') {
             $proposals->andWhere('status', $status);
+        }
+
+        return $proposals->paginate()->execute();
+    }
+
+    public function filterProposals(string $target, string $operator, string $value, string $search = ''): array
+    {
+        $proposals = $this->fetch('proposals')
+                          ->groupWhere([
+                              ['where', 'title', 'like', "%$search%"],
+                              ['or', 'description', 'like', "%$search%"],
+                          ], true);
+        
+        if ($this->user_type == 'employer') {
+            $proposals->subFetch('image', 'select media from users where users.id = proposals.skilled_id')
+                    ->subFetch('name', 'select fullname from users where users.id = proposals.skilled_id')
+                    ->subFetch('location', 'select location from users where users.id = proposals.skilled_id')
+                     ->andWhere('employer_id', $this->id);
+        } else {
+            $proposals->subFetch('image', 'select media from users where users.id = proposals.employer_id')
+                      ->subFetch('name', 'select title from jobs where jobs.id = proposals.job_id')
+                      ->subFetch('location', 'select location from jobs where jobs.id = proposals.job_id')
+                      ->andWhere('skilled_id', $this->id);
+        }
+
+        if ($operator !== 'order') {
+            $proposals = $proposals->andWhere($target, $operator, $value);
+        }
+
+        if ($value === 'asc') {
+            $proposals->asc($target);
+        }
+        if ($value === 'desc') {
+            $proposals->desc($target);
         }
 
         return $proposals->paginate()->execute();
@@ -174,21 +212,31 @@ class Proposal extends Model
 
     public function searchProposals(string $search): array
     {
-        $proposals = $this->fetch('proposals, users', ['distinct proposals.*'])
+        $proposals = $this->fetch('proposals, users, jobs', ['distinct proposals.*'])
                      ->subFetch('image', 'select media from users where users.id = proposals.skilled_id')
                      ->subFetch('name', 'select fullname from users where users.id = proposals.skilled_id')
-                     ->subFetch('location', 'select location from users where users.id = proposals.skilled_id')
                      ->groupWhere([
-                        ['where', 'title', 'like', "%$search%"],
-                        ['or', 'description', 'like', "%$search%"],
+                        ['where', 'proposals.title', 'like', "%$search%"],
+                        ['or', 'jobs.title', 'like', "%$search%"],
+                        ['or', 'proposals.description', 'like', "%$search%"],
                         ['or', 'users.fullname', 'like', "%$search%"],
                         ['or', 'users.location', 'like', "%$search%"],
+                        ['or', 'jobs.location', 'like', "%$search%"],
                      ], true)
                      ->groupWhere([
-                        ['where', 'employer_id', $this->id],
-                        ['or', 'skilled_id', $this->id],
+                        ['where', 'proposals.employer_id', $this->id],
+                        ['or', 'proposals.skilled_id', $this->id],
                      ], operator: 'and')
-                     ->rawCondition(" and (proposals.employer_id = users.id or proposals.skilled_id = users.id) ");
+                     ->rawCondition(" and (proposals.employer_id = users.id or proposals.skilled_id = users.id) and jobs.id = proposals.job_id ");
+
+        if($this->user_type == 'employer') {
+            $proposals = $proposals
+                        ->subFetch('location', 'select location from users where users.id = proposals.skilled_id');
+        }
+        else {
+            $proposals = $proposals
+                        ->subFetch('location', 'select location from jobs where jobs.id = proposals.job_id');
+        }
 
         return $proposals->paginate()->execute();
     }

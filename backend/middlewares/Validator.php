@@ -4,6 +4,15 @@ namespace Middleware;
 
 class Validator extends Middleware
 {
+    public function validateName($name) {
+        $name_no_space = str_replace(" ", "", $name);
+
+        if((ctype_alnum($name_no_space) || ctype_alpha($name_no_space)) && strlen($name_no_space) >= 4) {
+            return ['', $name];
+        }
+
+        return ['Name must be alphabetic or alphanumeric', $name];
+    }
     public function validateEmail($email) {
         // Regular expression for email validation
         $pattern = '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/';
@@ -50,6 +59,8 @@ class Validator extends Middleware
         $validator_map = [
             'email' => [$this, 'validateEmail'],
             'password' => [$this, 'validatePassword'],
+            'fullname' => [$this, 'validateName'],
+            'name' => [$this, 'validateName'],
         ];
 
         $result = [];

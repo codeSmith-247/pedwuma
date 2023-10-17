@@ -1,6 +1,8 @@
+import { useQuery as useQueryOriginal } from 'react-query';
 import CryptoJS from 'crypto-js';
 
-export const base = "https://localhost/pedwuma/backend";
+// export const base = "https://localhost/pedwuma/backend";
+export const base = "https://pedwuma.com/backend";
 export const url = "";
 
 const secretKey = '@mysecrete@key@200';
@@ -17,8 +19,12 @@ export function decrypt(encryptedToken) {
 }
 
 export function timeAgo(timestamp) {
-    const seconds = Math.floor((Date.now() - timestamp) / 1000);
-    
+    // Parse the timestamp string into a Date object
+    const timestampDate = new Date(timestamp?.replace(' ', 'T')); // Replace space with 'T' for proper parsing
+
+    // Calculate the time difference in seconds
+    const seconds = Math.floor((Date.now() - timestampDate) / 1000);
+
     const intervals = [
         { label: 'year', seconds: 31536000 },
         { label: 'month', seconds: 2592000 },
@@ -40,6 +46,17 @@ export function timeAgo(timestamp) {
     return 'just now';
 }
 
+// Create a custom useQuery function that wraps the original useQuery
+export const useQuery = (queryKey, options) => {
+  const queryResult = useQueryOriginal(queryKey, options);
+
+  setTimeout(() => {
+    document.querySelector('to-lang-trigger');
+  })
+
+  return queryResult;
+};
+
 
 export default {
     base,
@@ -47,4 +64,5 @@ export default {
     encrypt,
     decrypt,
     timeAgo,
+    useQuery
 };

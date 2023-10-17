@@ -1,16 +1,18 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import {read} from  '../databank';
 
 // eslint-disable-next-line react/prop-types
 const SkillPicker = ({oldskills = [], skillsCallback = () => {}}) => {
-    const [skills, setSkills] = useState([...oldskills]);
+    const [skills, setSkills] = useState(oldskills);
 
     const [selected_skills , setSelected_skills] = useState(oldskills);
 
     const {data, isLoading, isError} = read.useSkills();
 
-    // console.log(data);
+    if(skills.length <= 0 && oldskills.length > 0) setSkills([...oldskills]);
+
+    console.log(skills, oldskills, skills.length <= 0 && oldskills.length > 0);
 
     const handleSkills = (change_event) => {
         let value = change_event.target.value;

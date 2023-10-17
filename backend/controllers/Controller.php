@@ -8,8 +8,10 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Controller extends Middleware
 {
-    public $link_endpoint = 'https://localhost/pedwuma/backend';
-    public $frontend_endpoint = 'http://localhost:5173';
+    // public $link_endpoint = 'https://localhost/pedwuma/backend';
+    public $link_endpoint = 'https://pedwuma.com/backend';
+    public $frontend_endpoint = 'https://pedwuma.com';
+    // public $frontend_endpoint = 'http://localhost:5173';
     public $image_endpoint = '';
     public $video_endpoint = '';
     public $docs_endpoint = '';

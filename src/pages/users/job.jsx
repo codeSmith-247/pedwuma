@@ -70,18 +70,29 @@ const Job = () => {
             // console.log(response);
             response = response?.data;
 
-            Swal.fire({
-                icon: response?.status,
-                title: response?.title,
-                text: response?.message
-            });
+            if(response?.title == 'Session Expired') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Service Providers Only',
+                    text: 'You need to be log in as a Service Provider to send a proposal'
+                });
+            }
+            else {
+
+                Swal.fire({
+                    icon: response?.status,
+                    title: response?.title,
+                    text: response?.message
+                });
+            }
+
         }).catch(() => {
             setLoading(false);
             window.my_modal_2.close()
             Swal.fire({
                 icon: 'warning',
-                title: 'Skilled Persons Only',
-                text: 'You need to be log in as a skilled person to send a proposal'
+                title: 'Service Providers Only',
+                text: 'You need to be log in as a Service Provider to send a proposal'
             });
         });
     }

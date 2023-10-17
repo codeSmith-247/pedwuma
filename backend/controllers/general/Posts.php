@@ -5,6 +5,7 @@ namespace Controller\General;
 use Controller\Controller;
 use Middleware\Validator;
 use Model\User\User;
+use Model\Job\Appointment;
 
 class Posts extends Controller
 {
@@ -19,7 +20,6 @@ class Posts extends Controller
             'number' => $_POST['number'] ?? '',
             'password' => $_POST['password'] ?? '',
             'repeat-password' => $_POST['repeat-password'] ?? '',
-            'avatar' => $_FILES['avatar']['tmp_name'] ?? '',
             'role' => $_POST['role'] ?? '',
             'location' => $_POST['address'] ?? '',
             'lat' => $_POST['lat'] ?? '',
@@ -27,7 +27,7 @@ class Posts extends Controller
             'agree' => $_POST['agree'] ?? '',
         ]);
 
-        if($user->userExists($values['email'], $values['number'])) {
+        if ($user->userExists($values['email'], $values['number'])) {
             return [
                 'status' => 'error',
                 'title' => 'Account Exists',
@@ -50,6 +50,9 @@ class Posts extends Controller
                 'message' => 'Please check your inputs ( '.implode(', ', $empties).') , and try again.',
             ];
         }
+
+        $values['avatar'] = $_FILES['avatar']['tmp_name'] ?? 'default.jpg';
+
 
         [$empties, $values] = $validator->validate($values);
 
@@ -81,7 +84,7 @@ class Posts extends Controller
             $values['plan'] = 0;
         }
 
-        if (isset($values['plan'])) { // if the user is not a skilled person or the user is a skilled person and the plan is selected
+        if (isset($values['plan'])) { // if the user is not a Service Provider or the user is a Service Provider and the plan is selected
             $image_upload = $this->uploadFile('avatar', uniqid('avatar_'.time()), 'image');
 
             if ($values['plan'] <= 1) {
@@ -123,7 +126,6 @@ class Posts extends Controller
     {
         $this->startSession();
 
-
         if ($id === null) {
             $id = $this->decode($_SESSION['pedwuma_test']);
         }
@@ -132,9 +134,9 @@ class Posts extends Controller
         }
 
         [$empty, $id] = $this->clean($id);
-        [$empty, $email] = $this->clean($email);
+        [$empty2, $email] = $this->clean($email);
 
-        if ($empty) {
+        if ($empty || $empty2) {
             return [
                 'status' => 'error',
                 'title' => 'Empty Inputs',
@@ -148,33 +150,35 @@ class Posts extends Controller
 
         $verificationLink = $this->frontend_endpoint.'/verify/'.$this->encode($code);
 
-        if($user->user($id)['status'] !== 'unverified') return [
-            'status' => 'error',
-            'title'  => 'Account Already Verified',
-            'message' => 'This account has already been verified! please login to use your account.'
-        ];
+        if ($user->user($id)['status'] !== 'unverified') {
+            return [
+                'status' => 'error',
+                'title' => 'Account Already Verified',
+                'message' => 'This account has already been verified! please login to use your account.',
+            ];
+        }
 
         $user->verificationCode($id, $code);
 
-        if($this->sendEmail(
+        if ($this->sendEmail(
             $email,
             'Email Verification',
             'Congratulations! welcome to pedwuma, please click the button bellow to verify your accout, if you did not create an account with us please ignore this email.',
             $verificationLink,
             'Verify Account'
-        ))
-
-        return [
-            'status' => 'success',
-            'title' => 'Verification Link Sent',
-            'message' => 'Please check your email for your verification link'
-        ];
-
-        else return [
-            'status' => 'error',
-            'title' => 'System Busy',
-            'message' => 'System is unable to verify your account at the moment, please try again later',
-        ];
+        )) {
+            return [
+                'status' => 'success',
+                'title' => 'Verification Link Sent',
+                'message' => 'Please check your email for your verification link',
+            ];
+        } else {
+            return [
+                'status' => 'error',
+                'title' => 'System Busy',
+                'message' => 'System is unable to verify your account at the moment, please try again later',
+            ];
+        }
     }
 
     public function verifyEmail($code = null)
@@ -205,11 +209,13 @@ class Posts extends Controller
             ];
         }
 
-        if($user_id !== null and $user->user($user_id)['status'] !== 'unverified') return [
-            'status' => 'error',
-            'title'  => 'Account Already Verified',
-            'message' => 'This account has already been verified! please login to use your account.'
-        ];
+        if ($user_id !== null and $user->user($user_id)['status'] !== 'unverified') {
+            return [
+                'status' => 'error',
+                'title' => 'Account Already Verified',
+                'message' => 'This account has already been verified! please login to use your account.',
+            ];
+        }
 
         return [
             'status' => 'warning',
@@ -330,5 +336,160 @@ class Posts extends Controller
         }
 
         return false;
+    }
+
+    public function createAppointment()
+    {
+        [$empties, $values] = $this->clean_assoc($_POST);
+
+        if(count($empties) > 0) {
+            return [
+                'status' => 'error',
+                'title' => 'Empty Inputs',
+                'message' => 'Please fill in all inputs and try again ' . implode(', ', $empties), 
+            ];
+        }
+
+        $start = "{$values['start_month']} {$values['start_day']} {$values['start_time']} {$values['start_am']}";
+
+        $end = "{$values['end_month']} {$values['end_day']} {$values['end_time']} {$values['end_am']}";
+
+        $start = date_create_from_format('F jS g:i a', $start);
+        $end   = date_create_from_format('F jS g:i a', $end);
+
+        $now = new \DateTime();
+
+
+        if($start >= $end) {
+            return [
+                'status' => 'error',
+                'title'  => 'Invalid Dates',
+                'message'=> 'Make sure your end date is after your start date and try again'
+            ];
+        }
+
+        if($start < $now ) {
+            return [
+                'status' => 'error',
+                'title'  => 'Invalid Dates',
+                'message' => 'Make sure your appointment date is not in the past and try again',
+                'now' => $now,
+                'start' => $start,
+            ];
+        }
+
+        $values['start'] = $start->format('Y-m-d H:i:s');
+        $values['end']   = $end->format('Y-m-d H:i:s');
+
+        $user_id = $this->decode($_SESSION['pedwuma_test']);
+        $appointment = new Appointment($user_id);
+
+        $appointment->new($values);
+
+        return [
+            'status' => 'success',
+            'title'  => 'Appointment Booked Successfully',
+            'message' => ""
+        ];
+
+        // $this->error($start, $end);
+    }
+
+    public function reminder()
+    {
+
+        $appointment = new Appointment();
+
+        $appointments = $appointment->pending();
+
+
+        foreach($appointments as $appoint ) {
+            $endTimestamp = strtotime($appoint['start']); 
+
+            $currentTimestamp = time();
+
+            $timeDifference = $endTimestamp - $currentTimestamp;
+
+            $thirtyMinutesInSeconds = 30 * 60; // 30 minutes
+            $oneDayInSeconds = 24 * 60 * 60;    // 1 day
+
+            if ($timeDifference <= $thirtyMinutesInSeconds && ($appoint['status'] == 'one day left' || $appoint['status'] == 'active') ) {
+                $appointment->make($appoint['id'], "reminder sent");
+                $this->sendEmail(
+                    $appoint['recipient_email'],
+                    'Upcomming Appointment In Less Than 30 Minutes',
+                    "
+                     <div>A humble reminder about your upcoming appointment, which is scheduled as follows:</div>
+                    
+                     <ul>
+                        <li>Start Date: {$appoint['start_date']}</li>
+                        <li>End Date: {$appoint['end_date']}</li>
+                        <li>Title: {$appoint['title']}</li>
+                     </ul>
+
+                     <div>{$appoint['description']}</div>
+                    ",
+                    "https://pedwuma.com",
+                    'Pedwuma'
+                );
+                $this->sendEmail(
+                    $appoint['sender_email'],
+                    'Upcomming Appointment In Less Than 30 Minutes',
+                    "
+                     <div>A humble reminder about your upcoming appointment, which is scheduled as follows:</div>
+                    
+                     <ul>
+                        <li>Start Date: {$appoint['start_date']}</li>
+                        <li>End Date: {$appoint['end_date']}</li>
+                        <li>Title: {$appoint['title']}</li>
+                     </ul>
+
+                     <div>{$appoint['description']}</div>
+                    ",
+                    "https://pedwuma.com",
+                    'Pedwuma'
+                );
+            } elseif ($timeDifference <= $oneDayInSeconds && $appoint['status'] == 'active') {
+                $appointment->make($appoint['id'], "one day left");
+                $this->sendEmail(
+                    $appoint['recipient_email'],
+                    'Upcomming Appointment In Less Than A Day',
+                    "
+                     <div>A humble reminder about your upcoming appointment, which is scheduled as follows:</div>
+                    
+                     <ul>
+                        <li>Start Date: {$appoint['start_date']}</li>
+                        <li>End Date: {$appoint['end_date']}</li>
+                        <li>Title: {$appoint['title']}</li>
+                     </ul>
+
+                     <div>{$appoint['description']}</div>
+                    ",
+                    "https://pedwuma.com",
+                    'Pedwuma'
+                );
+                $this->sendEmail(
+                    $appoint['sender_email'],
+                    'Upcomming Appointment In Less Than A Day',
+                    "
+                     <div>A humble reminder about your upcoming appointment, which is scheduled as follows:</div>
+                    
+                     <ul>
+                        <li>Start Date: {$appoint['start_date']}</li>
+                        <li>End Date: {$appoint['end_date']}</li>
+                        <li>Title: {$appoint['title']}</li>
+                     </ul>
+
+                     <div>{$appoint['description']}</div>
+                    ",
+                    "https://pedwuma.com",
+                    'Pedwuma'
+                );
+            }
+
+
+        }
+
+        return $appointments;
     }
 }

@@ -65,4 +65,114 @@ class Skilled extends User
 
         return (int) $views->execute();
     }
+
+    public function createPortfolio($values)
+    {
+        $sql = " insert into portfolio set title = ? , description = ? , media = ? , budget = ? , duration = ? , skilled_id = ?  ";
+
+        $this->insert($sql, [
+            $values['title'],
+            $values['description'],
+            $values['media'],
+            $values['budget'],
+            $values['duration'] . ' ' . $values['duration_unit'],
+            $this->id,
+        ]);
+    }
+
+    public function updatePortfolio($values)
+    {
+        //adds media to the update query if an image is uploaded
+        $if_image = isset($values['media']) ? " media = ? , " : "";
+
+        $sql = " update portfolio set $if_image title = ? , description = ? , budget = ? , duration = ? where id = ? and skilled_id = ?  ";
+
+        //sets image value if an image is uploaded
+        $image_value = [];
+
+        if(isset($values['media']))
+            array_push($image_value, $values['media']);
+
+
+        $values = [
+            ...$image_value,
+            $values['title'],
+            $values['description'],
+            $values['budget'],
+            $values['duration'] . ' ' . $values['duration_unit'],
+            $values['id'],
+            $this->id,
+        ];
+            
+        $this->insert($sql, $values);
+    }
+
+    public function deletePortfolio($id)
+    {
+        $sql = " delete from portfolio where id = ? and skilled_id = ? ";
+
+        $values = [
+            $id,
+            $this->id
+        ];
+
+        $this->query($sql, $values, false);
+    }
+
+    public function portfolios()
+    {
+        $portfolios = $this->fetch('portfolio')
+                           ->where('skilled_id', $this->id)
+                           ->paginate()
+                           ->execute();
+
+        return $portfolios;
+    }
+
+    public function portfolio($id)
+    {
+        $portfolios = $this->fetch('portfolio')
+                           ->where('skilled_id', $this->id)
+                           ->andWhere('id', $id)
+                           ->execute();
+
+        return $portfolios[0] ?? [];
+    }
+
+    public function searchPortfolios(string $search): array
+    {
+        $portfolios = $this->fetch('portfolio')
+                     ->groupWhere([
+                        ['where', 'title', 'like', "%$search%"],
+                        ['or', 'description', 'like', "%$search%"],
+                        ['or', 'budget', 'like', "%$search%"],
+                        ['or', 'duration', 'like', "%$search%"],
+                     ], true)
+                     ->andWhere('skilled_id', $this->id);
+
+        return $portfolios->paginate()->execute();
+    }
+
+    public function reviews($id)
+    {
+        $reviews = $this->fetch('employer_reviews')
+                        ->subFetch('image', '( select media from users where id = employer_id )')
+                        ->subFetch('name', '( select fullname from users where id = employer_id )')
+                        ->where('skilled_id', $id)
+                        ->desc('created_at')
+                        ->paginate()->execute();
+
+        return $reviews ?? [];
+    }
+
+    public function skilledPortfolios($id)
+    {
+        $portfolios = $this->fetch('portfolio')
+                           ->where('skilled_id', $id)
+                           ->desc('created_at')
+                           ->paginate()
+                           ->execute();
+
+        return $portfolios ?? [];
+    }
 }

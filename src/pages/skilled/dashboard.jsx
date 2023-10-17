@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { SkilledStats, EmptyBox, TableLoading } from "../../components";
-import { read } from "../../databank";
+import { read, create } from "../../databank";
 
 
 const Dashboard = () => {
 
     const {data, isLoading, isError} = read.useSkilledJobs();
+    const navigate = useNavigate();
+
+    const handleEdit = (id) => {
+        create.setItem('chat_person', `${id}`);
+        navigate('/chat');
+    }
 
   return (
     <>
@@ -24,10 +31,13 @@ const Dashboard = () => {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="px-6 py-3">
-                                    Name
+                                    Title
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Location
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Minimum Pay
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     Status
@@ -41,26 +51,25 @@ const Dashboard = () => {
                         <TableLoading load={(isLoading || typeof(data?.data?.map) == 'undefined'  || isError)}/>
 
                         <tbody>
-                            { data && data?.data?.map((item, index) => 
-                                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            {data && data?.data?.map(item => 
+                                <tr key={item.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                                     <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <img className="w-10 h-10 rounded-full" src="/images/avatar.gif" alt="Jese image" />
-                                        <div className="pl-3">
-                                            <div className="text-base font-semibold">Neil Sims</div>
-                                            <div className="font-normal text-gray-500">neil.sims@flowbite.com</div>
-                                        </div>  
+                                        <div className="text-base font-semibold">{item.title}</div>
                                     </th>
                                     <td className="px-6 py-4">
-                                        React Developer
+                                        {item.location}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {item.minimum_pay}
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center">
-                                            <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> Online
+                                            <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> {item.status}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
+                                        <span onClick={() => handleEdit(item.employer_id)} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Chat Employer</span>
                                     </td>
                                 </tr>
                             )}

@@ -73,9 +73,76 @@ class Gets extends Controller
         return $skilled->jobs->filterUserJobs(...$search);
     }
 
+    public function proposals()
+    {
+        $this->startSession();
+
+        $user_id = $this->decode($_SESSION['pedwuma_test']);
+        $skilled = new Skilled($user_id);
+
+        [$empty, $type] = $this->clean($_REQUEST['type'] ?? 'recent');
+        $search = $this->searchEngine($type);
+
+
+        return $skilled->proposals->filterProposals(...$search);
+    }
+
+    public function portfolios()
+    {
+        $this->startSession();
+
+        $user_id = $this->decode($_SESSION['pedwuma_test']);
+        $skilled = new Skilled($user_id);
+
+        return $skilled->portfolios();
+    }
+
+    public function portfolio()
+    {
+        $this->startSession();
+
+        $user_id = $this->decode($_SESSION['pedwuma_test']);
+        $skilled = new Skilled($user_id);
+
+        [$empty, $id] = $this->clean($_POST['id'] ?? '');
+
+        if($empty) return [
+            'status' => 'error',
+            'title'  => 'System Busy',
+            'message' => 'System is currently unable to retrive this portfolio'
+        ];
+
+        $result = $skilled->portfolio($id);
+
+        $result['image_endpoint'] = $this->image_endpoint;
+        $result['sql'] = "select portfolio.* from portfolio where skilled_id = $user_id and id = $id";
+
+        return $result;
+    }
+
+    public function searchPortfolios()
+    {
+        [$empty, $value] = $this->clean($_REQUEST['value']);
+
+        if($empty) return [];
+
+        $user_id = $this->decode($_SESSION['pedwuma_test']);
+        $employer = new Skilled($user_id);
+
+        return [
+            'status' => 'success',
+            'title' => 'Jobs Retrieved Successfully',
+            'message' => '',
+            'data' => $employer->searchPortfolios($value),
+            'image_endpoint' => $this->image_endpoint,
+        ];
+    }
+
     public function searchJobs()
     {
         [$empty, $value] = $this->clean($_REQUEST['value']);
+
+        if($empty) return [];
 
         $user_id = $this->decode($_SESSION['pedwuma_test']);
         $employer = new Skilled($user_id);
@@ -88,4 +155,29 @@ class Gets extends Controller
             'image_endpoint' => $this->image_endpoint,
         ];
     }
+
+    public function skilledReviews()
+    {
+        [$empty, $id] = $this->clean($_REQUEST['id']);
+
+        if($empty) return [];
+
+        $skilled = new Skilled();
+
+        return $skilled->reviews($id);
+    }
+
+    public function skilledPortfolios()
+    {
+        [$empty, $id] = $this->clean($_REQUEST['id']);
+
+        if($empty) return [];
+
+        $skilled = new Skilled();
+
+        return $skilled->skilledPortfolios($id);
+
+    }
+
+    
 }

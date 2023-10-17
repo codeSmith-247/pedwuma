@@ -72,7 +72,7 @@ const Login = () => {
                       Dont have an account? <Link to="/signup" className="text-green-500 underline">Sign Up</Link> to get one!
                     </span>
 
-                    <div className="form-control w-full ">
+                    {/* <div className="form-control w-full ">
                         <label className="label w-full">
                             <span className="label-text text-center mx-auto h-[30px] w-[30px] my-2 border flex justify-center items-center rounded-full">OR</span>
                         </label>
@@ -85,7 +85,7 @@ const Login = () => {
                           </div>
                           <span className="px-2">Log in with Google</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     
 

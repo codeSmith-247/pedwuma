@@ -47,7 +47,7 @@ class Model extends Middleware
 
             $param_string = str_repeat('s', count($parameters));
 
-            $parameters = $this->clean_array($parameters)[1]; // clean array returns [empty, array], [1] ensures only array is returned
+            // $parameters = $this->clean_array($parameters)[1]; // clean array returns [empty, array], [1] ensures only array is returned
 
             if (strlen($param_string) > 0) {
                 $query->bind_param($param_string, ...$parameters);
@@ -175,8 +175,9 @@ class Model extends Middleware
         // selects jobs that belong to the provided category
         $this->query_conditions .= " $sql ";
 
-        if(count($parameters) > 0)
-        array_push($this->query_parameters, $parameters[0]);
+        if (count($parameters) > 0) {
+            array_push($this->query_parameters, $parameters[0]);
+        }
 
         return $this;
     }
@@ -287,7 +288,14 @@ class Model extends Middleware
 
     private function closeConnection(): void
     {
-        $this->connection->close();
+        try {
+            if(isset($this->connection->thread_id))
+                $this->connection->close();
+            // var_dump($this->connection);
+        }
+        catch(\Exception $e) {
+
+        }
     }
 
     public function resultEngine($result)

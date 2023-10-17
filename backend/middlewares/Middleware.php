@@ -171,19 +171,6 @@ class Middleware
 
     public function validateToken()
     {
-        $allowedOrigins = [
-            'http://localhost:5173',
-            'https://localhost:5173',
-        ];
-
-        $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
-
-        if (in_array($origin, $allowedOrigins)) {
-            header("Access-Control-Allow-Origin: $origin");
-            header('Access-Control-Allow-Methods: GET, POST');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization');
-            header('Access-Control-Allow-Credentials: true');
-        }
 
         $jwt = $_SERVER['HTTP_AUTHORIZATION'];
 
@@ -202,7 +189,7 @@ class Middleware
             }
 
             return $decoded;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [
                 'status' => 'error',
                 'title' => 'Oops',

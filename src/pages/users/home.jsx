@@ -1,11 +1,14 @@
 
-import  { ImageBG , Nav, Search, SkillsScroll, ReviewsScroll, JobGrid, HomeStat }  from "../../components/";
+import  { ImageBG , Nav, SearchJob, SkillsScroll, ReviewsScroll, JobGrid, HomeStat }  from "../../components/";
 
 // import { read } from '../../databank';
 
 
 
 const Home = () => {
+
+
+      
 
     return (
         <>
@@ -16,7 +19,7 @@ const Home = () => {
                         <div className="col-span-3 max-[670px]:col-span-5 flex flex-col justify-center p-10">
                             <h1 className="capitalize text-5xl font-black text-slate-900 max-[835px]:text-3xl">experience top-notch service from skilled individuals</h1>
                             <p className="max-w-[400px] pops my-3">Elevate with expert services tailored for you, trust our dedicated proffessionals for top-tier quality and satisfaction</p>
-                            <Search />
+                            <SearchJob  classname="" />
                         </div>
                         <div className="col-span-2 max-[670px]:col-span-5 flex flex-col justify-center items-center pr-10 max-[670px]:pr-0">
                             <div className="image h-full w-full max-[670px]:h-[90%] max-[670px]:w-[90%] tranform scale-110">

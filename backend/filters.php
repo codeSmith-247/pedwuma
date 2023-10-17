@@ -1,20 +1,29 @@
 <?php
 
 $router->filter('authenticate', function () use ($middleware) {
-    $token_data = $middleware->validateToken();
+    try {
+        $token_data = $middleware->validateToken();
 
-    if (!$token_data) {
+        if (!$token_data) {
+            return [
+                'status' => 'error',
+                'title' => 'Session Expired',
+                'message' => "it's been a while since you logged in, please log in again to continue using your account",
+                'data' => [],
+            ];
+        }
+
+        $middleware->startSession();
+
+        $_SESSION['pedwuma_test'] = $token_data->data->id;
+    } catch (\Exception $e) {
         return [
-            'status' => 'error',
+            'status' => 'warning',
             'title' => 'Session Expired',
             'message' => "it's been a while since you logged in, please log in again to continue using your account",
             'data' => [],
         ];
     }
-
-    $middleware->startSession();
-
-    $_SESSION['pedwuma_test'] = $token_data->data->id;
 });
 
 $router->filter('employer', function () use ($middleware, $user) {
@@ -44,7 +53,7 @@ $router->filter('skilled', function () use ($middleware, $user) {
         return [
             'status' => 'error',
             'title' => 'Unauthorised Access',
-            'message' => 'Only skilled people are allowed to use this page, sign in or sign up as a "Skilled Person" and try again',
+            'message' => 'Only skilled people are allowed to use this page, sign in or sign up as a "Service Provider" and try again',
         ];
     }
 });

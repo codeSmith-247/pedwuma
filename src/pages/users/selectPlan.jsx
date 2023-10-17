@@ -80,7 +80,7 @@ const SelectPlan = ({email, name, phone, setPlan = (plan) => {console.log(plan)}
 
                 <Loading load={loadingState}/>
 
-                <h1 className="capitalize text-3xl font-bold text-slate-900 max-[835px]:text-xl text-center">choose the recomended plan</h1>
+                <h1 className="capitalize text-3xl font-bold text-slate-900 max-[835px]:text-xl text-center">choose a plan</h1>
                 {/* <p className="text-sm font-bold pops text-center max-w-[350px] mx-auto my-5">Just kidding!😂 select the plan that wors for you!</p> */}
 
                 <div className="cards flex items-center justify-center flex-wrap gap-5 mt-7">
@@ -94,7 +94,11 @@ const SelectPlan = ({email, name, phone, setPlan = (plan) => {console.log(plan)}
                         <div className={`card w-[320px] max-[360px]:w-[90vw] min-h-[420px] rounded-md shadow-xl p-5 transform hover:-translate-y-2 ${ index == 1? "bg-neutral-800 text-white " : "bg-white scale-95"}`} key={item.name}>
                             <div className={`name text-sm font-bold whitespace-nowrap rounded-md p-1 px-4 w-min ${ index == 1? "bg-neutral-900" : "bg-neutral-200 "}`}>{item.name}</div>
                             <div className="font-bold my-5 flex text-5xl">
-                                <span className="orb">Ghc</span><span className=" orb">{item.price}</span>
+                                {item.price > 0 &&
+                                <>
+                                    <span className="orb">Ghc</span><span className=" orb">{item.price}</span>
+                                </>}
+                                {item.price <= 0 && <span className=" orb">Free</span>}
                             </div>
                             <span className="text-sm w-full border"></span>
 

@@ -32,8 +32,9 @@ const Jobs = () => {
         <>
             <ImageBG image="/images/vector_workers.png" classname="bg-green-100 bg-opacity-30 text-slate-800 rounded-2xl transform scale-95 my-5 overflow-hidden shadow">
                 <div className="wrapper backdrop-blur-md h-[260px] flex flex-col text-center justify-center items-center p-3 ">
-                    <h1 className="capitalize text-9xl font-black text-slate-900 max-[835px]:text-8xl">JOBS</h1>
-                    <p className="max-w-[500px] pops my-3 text-sm sm:text-base">Elevate with expert services tailored for you, trust our dedicated proffessionals for top-tier quality and satisfaction</p>
+                    <h1 className="capitalize text-5xl font-black text-slate-900 max-[835px]:text-5xl">SEARCH FOR JOBS IN YOUR AREA</h1>
+                    <p className="max-w-[500px] pops my-3 text-sm sm:text-base">Are you a skilled worker? browse our list of jobs, send proposals and start making money on pedwuma today!</p>
+                    {/* <p className="max-w-[500px] pops my-3 text-sm sm:text-base">Are you a skilled worker? browse our list of jobs, send proposals and start making money on pedwuma today!</p> */}
                 </div>
             </ImageBG>
 
@@ -113,7 +114,7 @@ const Jobs = () => {
                                         </div>
 
                                         <div className="proposals">
-                                            <span className="orb  font-medium">13</span>
+                                            <span className="orb  font-medium">{item.proposals}</span>
                                             <span className="orb px-1">Proposals</span>
                                         </div>
                                     </div>
@@ -126,7 +127,7 @@ const Jobs = () => {
                             </div>
                         )}
                     </div>
-                    <div className={`col-span-2 shadow-lg rounded-xl overflow-hidden h-min p-5 max-[1000px]:fixed ${filterPos} left-1/2 max-[1000px]:transform max-[1000px]:-translate-x-1/2 max-[1000px]:-translate-y-1/2 w-full max-[1000px]:h-[100vh] z-20 overflow-y-scroll bg-white`}>
+                    <div className={`col-span-2 shadow-lg rounded-xl overflow-hidden h-min p-5 max-[1000px]:fixed ${filterPos} left-1/2 max-[1000px]:transform max-[1000px]:-translate-x-1/2 max-[1000px]:-translate-y-1/2 w-full max-[1000px]:h-[100vh] z-20 overflow-y-scroll scrollbar-thin bg-white`}>
                         <div className="flex justify-end items-center">
                             <div className="h-[30px] w-[30px] rounded-md bg-red-500 text-white hidden max-[1000px]:flex items-center justify-center" onClick={() => setFilterPos("-top-[200vh]")}>
                                 <i className="bi bi-x-lg"></i>
@@ -144,7 +145,7 @@ const Jobs = () => {
 
                         <div className="my-5">
                             <div className="font-bold text-lg">Skills/Categories</div>
-                            <div className="h-screen overflow-y-scroll">
+                            <div className="h-screen overflow-y-scroll scrollbar-thin">
                                 <div className={`skill p-2 px-3 my-3 ${skill === '' ? 'bg-green-400 text-white' : 'bg-green-100 bg-opacity-40'}  text-neutral-600 font-bold rounded-md`} onClick={() => setSkill('')}>All Skills</div>
 
                                 {skills?.data?.data?.map( (skillss, index) => 

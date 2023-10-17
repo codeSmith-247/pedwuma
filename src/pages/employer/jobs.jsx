@@ -150,7 +150,7 @@ const Jobs = () => {
 
             }
 
-            <EmptyBox load={typeof(data?.data) == 'undefined' || typeof(data?.data[0]) == 'undefined' || (data?.data?.length <= 0 && page <= 1) } link={['New Job', '/employer/job']} text="Click the 'New Job' button to create a new job" />
+            <EmptyBox load={typeof(data?.data) == 'undefined' || typeof(data?.data[0]) == 'undefined' || (data?.data?.length <= 0 && page <= 1) } link={['New Job', '/employer/job']} title="No Jobs Yet" text="Click the 'New Job' button to create a new job" />
 
             <Pagination pages={parseInt(typeof(data?.data) !== 'undefined' && typeof (data?.data[0]) !== 'undefined' ? data?.data[0]['page_count'] : 0)} page={page} handlePage={setPage} />
         </>

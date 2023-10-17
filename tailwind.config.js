@@ -12,6 +12,7 @@ export default {
     require('flowbite/plugin')({
       charts: true,
     }), 
-    require("daisyui")
+    require("daisyui"),
+    require("tailwind-scrollbar")
   ],
 }

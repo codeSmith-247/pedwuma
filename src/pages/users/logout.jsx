@@ -9,7 +9,10 @@ const Logout = () => {
     }, [navigate])
 
   return (
-    <div>Loging out...</div>
+    <div className="h-[100vh] w-full flex items-center justify-center flex-col">
+        <img src="/images/logout.gif" className="w-[300px] h-[300px] rounded-full object-cover" />
+        <h1 className="font-bold text-center text-g mt-6">LOGING OUT...</h1>
+    </div>
   )
 }
 

@@ -44,7 +44,7 @@ const SearchSkill = ({searchCallback = () => {}, ...props}) => {
 
             {
                 searchResult?.data?.map((item, index) => 
-                    <div onClick={() => {searchCallback(item.title); setSearchResult([])}} className="result flex items-center p-1 bg-orange-100 hover:bg-green-100  bg-opacity-30 border-b" key={index}>
+                    <div onClick={() => {searchCallback(item.title, item.id); setSearchResult([])}} className="result flex items-center p-1 bg-orange-100 hover:bg-green-100  bg-opacity-30 border-b" key={index}>
                         {/* <img src={(item.image !== '' && item.image !== null)? `${searchResult.image_endpoint}/${item.image}` : "/images/avatar.gif"} className="h-[45px] w-[45px] rounded-full" /> */}
                         <div className="ml-2">
                             <p className="pops font-bold ">{item.title}</p>

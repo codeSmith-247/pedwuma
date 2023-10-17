@@ -3,11 +3,13 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Link } from 'react-router-dom';
 
-const JobGrid = () => {
+const JobGrid = ({limit=9}) => {
 
     const { data, isLoading, isError } = read.useJobs();
 
-    // console.log('data', data);
+    console.log('data', data);
+
+    const spliced_array = data?.data?.slice(0, limit);
 
     if(isLoading || isError || typeof(data?.data?.map) == 'undefined'  || data?.data?.length <= 0)
         return (
@@ -38,7 +40,7 @@ const JobGrid = () => {
     else 
         return (
             <div className="grid grid-cols-9 max-[1000px]:grid-cols-6 max-[690px]:grid-cols-3 gap-3 max-[525px]:gap-0 ">
-                {data?.data?.map(item => 
+                {spliced_array?.map(item => 
                     <div className={`card col-span-3  text-slate-800 bg-white max-[525px]:bg-opacity-0 max-[525px]:shadow-none p-3 rounded-md shadow`} key={item.title}>
                         <div className="top flex items-center">
                             <div className={`avatar rounded-full border-2 border-orange-100 h-[50px] w-[50px] shadow`}>
@@ -56,8 +58,8 @@ const JobGrid = () => {
                                 </div>
                             </div>
                         </div>
-                        <p className="pops my-2 text-sm">
-                            {item.description}
+                        <p className="pops my-2 text-sm leading-relaxed min-h-[120px]">
+                            {item.description.slice(0,250)}{ item.description.length > 250 ? '...' : ''}
                         </p>
                         <Link to={`/job/${encrypt(`${item.id}`)}`} className="btn text-white flex items-center justify-center hover:bg-green-500 bg-green-400 p-2 font-bold rounded-md w-full">View Requirements</Link>
 

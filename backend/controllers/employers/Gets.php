@@ -79,6 +79,8 @@ class Gets extends Controller
     {
         [$empty, $value] = $this->clean($_REQUEST['value']);
 
+        if($empty) return [];
+
         $user_id = $this->decode($_SESSION['pedwuma_test']);
         $employer = new Employer($user_id);
 

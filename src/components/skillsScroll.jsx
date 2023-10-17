@@ -36,13 +36,13 @@ const SkillsScroll = () => {
   return (
     <SideScroll>
         {data?.data?.map((item, index) =>
-            <ImageBG image={`/images/carpenter.jpg`} classname={`max-w-[300px] card col-span-3 rounded-md overflow-hidden hover:shadow`} key={index}>
+            <ImageBG image={`/images/${item?.media}`} classname={`max-w-[300px] card col-span-3 rounded-md overflow-hidden hover:shadow`} key={index}>
                 <div className=" h-[420px]  bg-overlay bg-opacity-30 p-2 flex flex-col justify-end text-center">
                     <h3 className="font-bold text-xl ">{item.title}</h3>
                     <p className="pops text-sm my-2">
                         {item.description.slice(0, 160)}...
                     </p>
-                    <Link to="/people" className="btn text-white flex items-center justify-center hover:bg-green-500 bg-green-400 p-2 font-bold rounded-md w-full">View Skills</Link>
+                    <Link to={`/people/${item.title}`} className="btn text-white flex items-center justify-center hover:bg-green-500 bg-green-400 p-2 font-bold rounded-md w-full">View Skills</Link>
                 </div>
             </ImageBG>
         )}

@@ -7,7 +7,23 @@
     transition: .3s;
 }
 
+.bg-green-500, .bg-green-600, .bg-green-400 {
+    background: #388fff !important;
+    border-color: #388fff !important;
+    color: white;
+}
 
+.border-green-500, .border-green-400, .border-green-300 {
+    border-color: #388fff !important;
+}
+
+.bg-orange-100 {
+    background: #8b7eff1c !important;
+}
+
+.select-small {
+    padding-top: 0;
+}
 
 .btn span {
     position: relative;

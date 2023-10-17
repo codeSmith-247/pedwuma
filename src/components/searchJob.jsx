@@ -3,7 +3,7 @@ import { read, encrypt } from '../databank';
 import { Link } from 'react-router-dom';
 import Search from './search';
 
-const SearchJob = () => {
+const SearchJob = ({classname = "mx-auto"}) => {
 
     const [search, setSearch] = useState('');
     const [searchResult, setSearchResult] = useState([]);
@@ -31,7 +31,7 @@ const SearchJob = () => {
     }
 
   return (
-    <Search classname="mx-auto w-[95%] relative max-[835px]:transform max-[835px]:scale-95" placeholder="Type your search here..." onChange={(e) => {setSearch(e.target.value); handleSearch()}} onClick={handleSearch}>
+    <Search classname={`${classname} w-[95%] relative max-[835px]:transform max-[835px]:scale-95`} placeholder="Enter an address, city , country or job title to narrow your search " onChange={(e) => {setSearch(e.target.value); handleSearch()}} onClick={handleSearch}>
         <div className="results absolute top-full left-0 w-full bg-white shadow cursor-pointer rounded mt-1 z-50">
             {searchLoading && <div className="text-center">
                 <span className="loading loading-bars loading-lg text-green-200"></span>

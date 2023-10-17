@@ -11,7 +11,7 @@ use Phroute\Phroute\RouteCollector;
 use Symfony\Component\ErrorHandler\Debug;
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Authorization, Accept');
 header('Access-Control-Allow-Credentials: true');
 

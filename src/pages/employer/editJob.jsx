@@ -43,8 +43,29 @@ const EditJob = () => {
             confirmButtonText: 'Yes, delete it!'
           }).then((result) => {
             if (result.isConfirmed) {
-              deletes.deleteJob(id).then(() => {
-                queryClient.invalidateQueries('*');
+                setSubmit(
+                    {
+                        isLoading: true,
+                        isError: true,
+                    }
+                );
+              deletes.deleteJob(id).then((response) => {
+                console.log(response);
+                Swal.fire({
+                    icon:  response?.data?.status,
+                    title: response?.data?.title, 
+                    text:  response?.data?.message,
+                }).then( () => {
+                    if(response?.data?.status == 'success') navigate('/employer/jobs');
+                    queryClient.invalidateQueries();
+
+                });
+                setSubmit(
+                    {
+                        isLoading: false,
+                        isError: false,
+                    }
+                );
               });
             }
           })
@@ -91,7 +112,7 @@ const EditJob = () => {
                 });
             }
 
-            queryClient.resetQueries();
+            queryClient.invalidateQueries();
             
         }).catch((error) => {
             (error);
@@ -117,6 +138,8 @@ const EditJob = () => {
     }
 
     const skills = prevData?.skills?.map(skill => skill.skill);
+
+    console.log(prevData);
 
     const quillRef = useRef();
 

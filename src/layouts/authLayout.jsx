@@ -31,6 +31,12 @@ const links = [
         icon: "chat",
         link: "/chats"
     },
+
+    {
+        name: "Appointments",
+        icon: "clock",
+        link: "/skilled/appointments"
+    },
     {
         name: "Settings",
         icon: "wrench",
@@ -48,7 +54,7 @@ const AuthLayout = ({id, authNavs = links}) => {
 
     // console.log(data);
 
-    if(data?.status === 'error'){
+    if(data?.status === 'error' || data?.status === 'warning'){
         Swal.fire({
             icon: data?.status,
             title: data?.title,
@@ -62,8 +68,13 @@ const AuthLayout = ({id, authNavs = links}) => {
         return (
             <>
                 <section className={`main-dashboard flex h-screen overflow-hidden p-1 text-neutral-800 absolute w-min right-0 top-0 ${menu ? '' : 'active'}`}>
-                    <div className="left bg-white border-r border-neutral-100 border-opacity-90 p-5 w-[250px]" >
-                        <Link to='/' className="logo text-xl border-b pb-5 font-black text-center block w-full">PEADWUMA</Link>
+                    <div className="left bg-white border-r border-neutral-100 border-opacity-90 p-3 w-[250px]" >
+                        <Link to='/' className="logo text-lg text-gray-200 italic font-black text-center block w-full flex items-center justify-center flex-col">
+                            <div className="logo font-black text-lg h-[50px] w-[50px] overflow-hidden rounded-full mx-5">
+                                <img src="/images/logo.jpg" className="object-cover h-full w-full scale-150" />
+                            </div>
+                            PEDWUMA
+                        </Link>
     
                         <div className="nav-links py-5">
                             {authNavs.map(item => 
